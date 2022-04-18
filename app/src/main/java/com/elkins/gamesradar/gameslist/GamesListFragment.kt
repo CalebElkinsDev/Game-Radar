@@ -1,6 +1,7 @@
 package com.elkins.gamesradar.gameslist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.gameslist.placeholder.PlaceholderContent
+import com.elkins.gamesradar.network.GiantBombApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Response
+import okhttp3.ResponseBody
+import kotlin.math.log
 
 /**
  * A fragment representing a list of Items.
@@ -43,6 +51,22 @@ class GamesListFragment : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // TODO Remove api test code
+        GlobalScope.launch {
+            Log.d("Network", "Fetching Giant Bomb games")
+            val body = GiantBombApi.retrofitService.getAllGames(
+                apikey = "66e90279e18122006ea7d509821c519bb14bfe1d")
+
+            for(game in body.body()?.results!!) {
+                Log.d("Game", game.image!!.originalUrl!!)
+            }
+        }
+
     }
 
     companion object {
