@@ -4,25 +4,23 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.elkins.gamesradar.R
-import com.elkins.gamesradar.gameslist.placeholder.PlaceholderContent
+import com.elkins.gamesradar.databinding.FragmentGamesListBinding
 import com.elkins.gamesradar.network.GiantBombApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.Response
-import okhttp3.ResponseBody
-import kotlin.math.log
 
 /**
  * A fragment representing a list of Items.
  */
 class GamesListFragment : Fragment() {
+
+    private lateinit var binding: FragmentGamesListBinding
+    private lateinit var adapter: GamesListRecyclerViewAdapter
 
     private var columnCount = 1
 
@@ -42,13 +40,18 @@ class GamesListFragment : Fragment() {
 
         // Set the adapter
         if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = GamesListRecyclerViewAdapter(PlaceholderContent.ITEMS)
-            }
+            view.layoutManager = GridLayoutManager(context, columnCount)
+            adapter = GamesListRecyclerViewAdapter()
+            view.adapter = adapter
+
+//            with(view) {
+//                layoutManager = when {
+//                    columnCount <= 1 -> LinearLayoutManager(context)
+//                    else -> GridLayoutManager(context, columnCount)
+//                }
+//                adapter = GamesListRecyclerViewAdapter()
+//
+//            }
         }
         return view
     }
@@ -59,10 +62,10 @@ class GamesListFragment : Fragment() {
         // TODO Remove api test code
         GlobalScope.launch {
             Log.d("Network", "Fetching Giant Bomb games")
-            val body = GiantBombApi.retrofitService.getAllGames(
+            val response = GiantBombApi.retrofitService.getAllGames(
                 apikey = "66e90279e18122006ea7d509821c519bb14bfe1d")
 
-            for(game in body.body()?.results!!) {
+            for(game in response.body()?.results!!) {
                 Log.d("Game", game.image!!.originalUrl!!)
             }
         }
