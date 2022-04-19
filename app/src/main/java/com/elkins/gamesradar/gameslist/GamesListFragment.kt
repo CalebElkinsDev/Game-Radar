@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
 import com.elkins.gamesradar.network.GiantBombApi
@@ -20,9 +22,10 @@ import kotlinx.coroutines.launch
 class GamesListFragment : Fragment() {
 
     private lateinit var binding: FragmentGamesListBinding
+    private lateinit var viewModel: GamesListViewModel
     private lateinit var adapter: GamesListRecyclerViewAdapter
 
-    private var columnCount = 1
+    private var columnCount = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,34 +46,19 @@ class GamesListFragment : Fragment() {
             view.layoutManager = GridLayoutManager(context, columnCount)
             adapter = GamesListRecyclerViewAdapter()
             view.adapter = adapter
-
-//            with(view) {
-//                layoutManager = when {
-//                    columnCount <= 1 -> LinearLayoutManager(context)
-//                    else -> GridLayoutManager(context, columnCount)
-//                }
-//                adapter = GamesListRecyclerViewAdapter()
-//
-//            }
         }
+
+        // Initialize ViewModel
+        val viewModelFactory = GamesListViewModelFactory()
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(GamesListViewModel::class.java)
+
+        viewModel.games.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // TODO Remove api test code
-        GlobalScope.launch {
-            Log.d("Network", "Fetching Giant Bomb games")
-            val response = GiantBombApi.retrofitService.getAllGames(
-                apikey = "66e90279e18122006ea7d509821c519bb14bfe1d")
-
-            for(game in response.body()?.results!!) {
-                Log.d("Game", game.image!!.originalUrl!!)
-            }
-        }
-
-    }
 
     companion object {
 
