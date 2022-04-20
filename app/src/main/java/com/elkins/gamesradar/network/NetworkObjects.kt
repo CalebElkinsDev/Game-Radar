@@ -22,7 +22,7 @@ data class NetworkGame(
     val id: Long,
     val guid: String,
     val name: String,
-    val platforms: List<String>?, // TODO create enum class
+    val platforms: List<NetworkPlatform>,
     val image: NetworkImage?,
     @Json(name = "original_release_date") val originalReleaseDate: String?,
     @Json(name = "expected_release_year") val expectedReleaseYear: Int?,
@@ -36,7 +36,9 @@ fun NetworkGame.asDatabaseModel(): DatabaseGame {
         id = id,
         guid = guid,
         name = name,
-        platforms = platforms,
+        platforms = platforms.map {
+            it.abbreviation
+        },
         imageUrl = image!!.originalUrl
     )
 }
@@ -53,4 +55,10 @@ data class NetworkImage(
     @Json(name = "thumb_url") val thumbUrl: String?,
     @Json(name = "tiny_url") val tinyUrl: String?,
     @Json(name = "original_url") val originalUrl: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkPlatform(
+    val name: String,
+    val abbreviation: String
 )

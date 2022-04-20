@@ -5,14 +5,14 @@ import java.lang.StringBuilder
 
 class TypeConvertors {
 
-    /* Created for "Platforms", will be utilized in the future */
+    /* Type convertors for "Platforms" */
     @TypeConverter
     fun fromStringList(value: List<String>): String {
-        val sb: StringBuilder = StringBuilder()
+        val sb = StringBuilder()
         for(s in value) {
-            sb.append(s)
+            sb.append(s).append(",")
         }
-        return sb.toString()
+        return sb.toString().removeSuffix(",")
     }
 
     @TypeConverter

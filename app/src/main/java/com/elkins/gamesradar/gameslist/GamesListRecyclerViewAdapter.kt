@@ -3,8 +3,10 @@ package com.elkins.gamesradar.gameslist
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.elkins.gamesradar.R
 import com.elkins.gamesradar.database.DatabaseGame
 
 import com.elkins.gamesradar.gameslist.placeholder.PlaceholderContent.PlaceholderItem
@@ -33,6 +35,17 @@ class GamesListRecyclerViewAdapter(
 
         fun bind(item: DatabaseGame) {
             binding.game = item
+            binding.platformsGroup.removeAllViews() // Clear previous platforms
+            for(platform in item.platforms!!) {
+                val view = LayoutInflater.from(binding.root.context).inflate(
+                    R.layout.platform_item,
+                    binding.platformsGroup,
+                    false
+                ) as TextView
+
+                view.text = platform
+                binding.platformsGroup.addView(view)
+            }
             binding.executePendingBindings()
         }
 
