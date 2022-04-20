@@ -22,7 +22,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/thumbnailImageView"
@@ -40,7 +40,7 @@
                 android:id="@+id/gameName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@{game.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="bold"
@@ -54,31 +54,24 @@
                 android:id="@+id/releaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                app:layout_constraintBottom_toBottomOf="@id/platformsDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gameName"
+                android:text="Release Date"
                 tools:text="Release Date" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/platformsDivider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="386dp"
-                app:barrierDirection="top"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/releaseDate" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/platformsGroup"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/platformsDivider"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:flexDirection="row"
                 app:flexWrap="wrap"
-                app:flexDirection="row">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/releaseDate"
+                app:layout_constraintVertical_bias="1.0">
 
             </com.google.android.flexbox.FlexboxLayout>
 

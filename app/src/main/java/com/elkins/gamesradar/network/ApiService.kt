@@ -9,6 +9,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -36,7 +38,9 @@ interface ApiServices {
     @GET("games")
     suspend fun getAllGames(
         @Query("api_key") apikey: String,
-        @Query("format") format: String = "json"): Response<GamesResponse>
+        @Query("format") format: String = "json",
+        @Query("filter") filter: String
+    ): Response<GamesResponse>
 }
 
 object GiantBombApi {

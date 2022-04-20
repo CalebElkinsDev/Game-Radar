@@ -9,16 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.database.DatabaseGame
 
-import com.elkins.gamesradar.gameslist.placeholder.PlaceholderContent.PlaceholderItem
 import com.elkins.gamesradar.databinding.GameListItemBinding
-import com.elkins.gamesradar.network.NetworkGame
 
 /**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
+ * [RecyclerView.Adapter] that displays [DatabaseGame] objects.
  */
-class GamesListRecyclerViewAdapter(
-) : ListAdapter<DatabaseGame, GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
+class GamesListRecyclerViewAdapter: ListAdapter<DatabaseGame,
+        GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : GameViewHolder {
         return GameViewHolder.from(parent)
@@ -35,6 +32,8 @@ class GamesListRecyclerViewAdapter(
 
         fun bind(item: DatabaseGame) {
             binding.game = item
+
+            /* Add a custom text view to the platforms group for each platform of the game*/
             binding.platformsGroup.removeAllViews() // Clear previous platforms
             for(platform in item.platforms!!) {
                 val view = LayoutInflater.from(binding.root.context).inflate(
@@ -59,9 +58,9 @@ class GamesListRecyclerViewAdapter(
         }
     }
 
+
     class GameDiffCallback : DiffUtil.ItemCallback<DatabaseGame>() {
         override fun areItemsTheSame(oldItem: DatabaseGame, newItem: DatabaseGame): Boolean {
-            // Compare the Imdb Id used as the primary key
             return oldItem.id == newItem.id
         }
 

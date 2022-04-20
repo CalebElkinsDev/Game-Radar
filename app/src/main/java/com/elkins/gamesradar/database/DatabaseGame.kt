@@ -10,5 +10,5 @@ data class DatabaseGame (
     val name: String,
     val imageUrl: String?,
     val platforms: List<String>?
-    // TODO add release date and
+    // TODO add release date
 )

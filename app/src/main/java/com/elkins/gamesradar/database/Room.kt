@@ -11,8 +11,12 @@ interface GamesDao {
     @Query("SELECT * FROM databasegame")
     fun getGames(): LiveData<List<DatabaseGame>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) // TODO update and replace if change
+    /* Insert a list of games to the database that are not already present */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(games: List<DatabaseGame>)
+
+    @Query("DELETE FROM databasegame")
+    fun clearDatabase()
 }
 
 @TypeConverters(TypeConvertors::class)
