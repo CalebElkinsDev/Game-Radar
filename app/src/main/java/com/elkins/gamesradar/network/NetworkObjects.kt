@@ -1,6 +1,8 @@
 package com.elkins.gamesradar.network
 
 import com.elkins.gamesradar.database.DatabaseGame
+import com.elkins.gamesradar.utility.DateUtilities.Companion.networkDateStringToDate
+import com.elkins.gamesradar.utility.timeInMillis
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -22,7 +24,7 @@ data class NetworkGame(
     val id: Long,
     val guid: String,
     val name: String,
-    val platforms: List<NetworkPlatform>,
+    val platforms: List<NetworkPlatform>?,
     val image: NetworkImage?,
     @Json(name = "original_release_date") val originalReleaseDate: String?,
     @Json(name = "expected_release_year") val expectedReleaseYear: Int?,
@@ -36,10 +38,11 @@ fun NetworkGame.asDatabaseModel(): DatabaseGame {
         id = id,
         guid = guid,
         name = name,
-        platforms = platforms.map {
+        platforms = platforms?.map {
             it.abbreviation
         },
-        imageUrl = image!!.originalUrl
+        imageUrl = image!!.originalUrl,
+        originalReleaseDate = networkDateStringToDate(originalReleaseDate).timeInMillis()
     )
 }
 

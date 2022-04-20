@@ -39,7 +39,8 @@ interface ApiServices {
     suspend fun getAllGames(
         @Query("api_key") apikey: String,
         @Query("format") format: String = "json",
-        @Query("filter") filter: String
+        @Query("filter") filter: String,
+        @Query("sort") sort: String
     ): Response<GamesResponse>
 }
 

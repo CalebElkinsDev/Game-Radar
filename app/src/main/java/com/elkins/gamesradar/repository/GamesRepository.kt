@@ -1,19 +1,19 @@
 package com.elkins.gamesradar.repository
 
+import android.text.format.Time
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
 import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.network.asDatabaseModel
+import com.elkins.gamesradar.utility.originalReleaseDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
 class GamesRepository(private val database: GamesDatabase) {
-
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     val games: LiveData<List<DatabaseGame>> = database.gamesDao.getGames()
 
@@ -23,7 +23,9 @@ class GamesRepository(private val database: GamesDatabase) {
 
             val response = GiantBombApi.retrofitService.getAllGames(
                 apikey = "66e90279e18122006ea7d509821c519bb14bfe1d",
-                filter = testFilter())
+                filter = testFilter(),
+                sort = getSort())
+
             if(response.body() != null) {
                 //Insert into database
                 database.gamesDao.insertAll(response.body()!!.results.map {
@@ -34,19 +36,28 @@ class GamesRepository(private val database: GamesDatabase) {
         }
     }
 
+    private fun getSort(): String {
+        return filterSortOrder(true)
+    }
+
     private fun testFilter(): String {
         return filterReleaseDates()
     }
 
+    private fun filterSortOrder(sortAscending: Boolean): String {
+        return "original_release_date:" + if(sortAscending) "asc" else "desc"
+    }
 
+    /** Return the filter field for original_release_date */
     private fun filterReleaseDates(): String {
 
         val calendar: Calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
-        val startingReleaseDate = dateFormat.format(calendar.time)
+        calendar.add(Calendar.YEAR, -1)
+        val startingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
-        calendar.add(Calendar.YEAR, Calendar.YEAR+1)
-        val endingReleaseDate = dateFormat.format(calendar.time)
+        calendar.timeInMillis = System.currentTimeMillis()
+        val endingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
         return "original_release_date:" + "${startingReleaseDate}|${endingReleaseDate}"
     }

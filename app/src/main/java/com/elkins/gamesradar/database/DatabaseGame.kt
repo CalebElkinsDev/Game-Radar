@@ -2,6 +2,7 @@ package com.elkins.gamesradar.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity
 data class DatabaseGame (
@@ -9,6 +10,7 @@ data class DatabaseGame (
     val guid: String,
     val name: String,
     val imageUrl: String?,
-    val platforms: List<String>?
+    val platforms: List<String>?,
+    val originalReleaseDate: Long?
     // TODO add release date
 )
