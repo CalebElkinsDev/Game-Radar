@@ -9,5 +9,6 @@ data class DatabaseGame (
     val guid: String,
     val name: String,
     val imageUrl: String?,
+    val platforms: List<String>?
     // TODO add release date and platforms
 )

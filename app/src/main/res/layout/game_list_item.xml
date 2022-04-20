@@ -13,11 +13,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#3156B5"
+        app:cardBackgroundColor="#DFDFDF"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true"
-        app:contentPadding="4dp">
+        app:contentPadding="8dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +28,8 @@
                 android:id="@+id/thumbnailImageView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="4:3"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,11 +40,47 @@
                 android:id="@+id/gameName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="@{game.name}"
-                app:layout_constraintTop_toBottomOf="@id/thumbnailImageView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="Game Name"/>
+                app:layout_constraintTop_toBottomOf="@id/thumbnailImageView"
+                tools:text="Game Name" />
 
+            <TextView
+                android:id="@+id/releaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/platformsDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/gameName"
+                tools:text="Release Date" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/platformsDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="386dp"
+                app:barrierDirection="top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/releaseDate" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/platformsGroup"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/platformsDivider"
+                app:flexWrap="wrap"
+                app:flexDirection="row">
+
+            </com.google.android.flexbox.FlexboxLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

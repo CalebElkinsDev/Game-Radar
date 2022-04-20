@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/drawable/platform_background.xml" value="0.214" />
         <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/activity_main.xml" value="0.3278985507246377" />
         <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/fragment_game_details.xml" value="0.1331521739130435" />
+        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/fragment_games_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/fragment_games_list_list.xml" value="0.3278985507246377" />
-        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/game_list_item.xml" value="0.22" />
+        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/game_list_item.xml" value="0.5567010309278351" />
+        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/platform_item.xml" value="0.5" />
       </map>
     </option>
   </component>
