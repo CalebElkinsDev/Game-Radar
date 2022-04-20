@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.elkins.gamesradar.database.DatabaseGame
 
 import com.elkins.gamesradar.gameslist.placeholder.PlaceholderContent.PlaceholderItem
 import com.elkins.gamesradar.databinding.GameListItemBinding
@@ -15,7 +16,7 @@ import com.elkins.gamesradar.network.NetworkGame
  * TODO: Replace the implementation with code for your data type.
  */
 class GamesListRecyclerViewAdapter(
-) : ListAdapter<NetworkGame, GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
+) : ListAdapter<DatabaseGame, GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : GameViewHolder {
         return GameViewHolder.from(parent)
@@ -30,7 +31,7 @@ class GamesListRecyclerViewAdapter(
     class GameViewHolder(private val binding: GameListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: NetworkGame) {
+        fun bind(item: DatabaseGame) {
             binding.game = item
             binding.executePendingBindings()
         }
@@ -45,13 +46,13 @@ class GamesListRecyclerViewAdapter(
         }
     }
 
-    class GameDiffCallback : DiffUtil.ItemCallback<NetworkGame>() {
-        override fun areItemsTheSame(oldItem: NetworkGame, newItem: NetworkGame): Boolean {
+    class GameDiffCallback : DiffUtil.ItemCallback<DatabaseGame>() {
+        override fun areItemsTheSame(oldItem: DatabaseGame, newItem: DatabaseGame): Boolean {
             // Compare the Imdb Id used as the primary key
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: NetworkGame, newItem: NetworkGame): Boolean {
+        override fun areContentsTheSame(oldItem: DatabaseGame, newItem: DatabaseGame): Boolean {
             return oldItem.id == newItem.id
         }
     }

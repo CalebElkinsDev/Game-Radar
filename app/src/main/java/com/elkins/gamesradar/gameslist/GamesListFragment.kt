@@ -49,7 +49,7 @@ class GamesListFragment : Fragment() {
         }
 
         // Initialize ViewModel
-        val viewModelFactory = GamesListViewModelFactory()
+        val viewModelFactory = GamesListViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(GamesListViewModel::class.java)
 
         viewModel.games.observe(viewLifecycleOwner) {

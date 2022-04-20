@@ -1,29 +1,37 @@
 package com.elkins.gamesradar.gameslist
 
+import android.app.Application
 import android.graphics.Movie
+import android.util.Log
 import androidx.lifecycle.*
+import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.network.NetworkGame
+import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
+import java.io.IOException
 
-class GamesListViewModel : ViewModel() {
+class GamesListViewModel(private val application: Application) : ViewModel() {
 
-    private var _games = MutableLiveData<List<NetworkGame>>()
-    val games: LiveData<List<NetworkGame>>
-        get() = _games
+    private val gamesRepository = GamesRepository(getDatabase(application))
+
+    val games = gamesRepository.games
+
 
     init {
         viewModelScope.launch {
-            val response = GiantBombApi.retrofitService.getAllGames(apikey = "66e90279e18122006ea7d509821c519bb14bfe1d")
-            if(response.body() != null) {
-                _games.value = response.body()?.results
+            try {
+                gamesRepository.getGames()
+            } catch (networkError: IOException) {
+                Log.e("Network Error", networkError.message?: "Network error " +
+                "in GamesListViewModel")
             }
         }
     }
 }
 
-class GamesListViewModelFactory : ViewModelProvider.Factory {
+class GamesListViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return GamesListViewModel() as T
+        return GamesListViewModel(application) as T
     }
 }

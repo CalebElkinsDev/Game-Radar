@@ -1,5 +1,6 @@
 package com.elkins.gamesradar.network
 
+import com.elkins.gamesradar.database.DatabaseGame
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -21,7 +22,7 @@ data class NetworkGame(
     val id: Long,
     val guid: String,
     val name: String,
-    val platforms: List<Any>, // TODO create enum class
+    //val platforms: List<String>, // TODO create enum class
     val image: NetworkImage?,
     @Json(name = "original_release_date") val originalReleaseDate: String?,
     @Json(name = "expected_release_year") val expectedReleaseYear: Int?,
@@ -29,6 +30,16 @@ data class NetworkGame(
     @Json(name = "expected_release_month") val expectedReleaseMonth: Int?,
     @Json(name = "expected_release_day") val expectedReleaseDay: Int?
 )
+
+fun NetworkGame.asDatabaseModel(): DatabaseGame {
+    return DatabaseGame(
+        id = id,
+        guid = guid,
+        name = name,
+        //platforms = platforms,
+        imageUrl = image!!.originalUrl
+    )
+}
 
 /* Network class containing links for a game's images */
 @JsonClass(generateAdapter = true)
