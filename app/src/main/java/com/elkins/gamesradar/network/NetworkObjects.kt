@@ -15,7 +15,7 @@ data class GamesResponse(
     @Json(name = "number_of_page_results") val totalPages: Int,
     val limit: Int,
     val offset: Int,
-    val results: MutableList<NetworkGame>
+    val results: List<NetworkGame>
 )
 
 /* Individual game from the results of the "games' response */
@@ -42,7 +42,11 @@ fun NetworkGame.asDatabaseModel(): DatabaseGame {
             it.abbreviation
         },
         imageUrl = image!!.originalUrl,
-        originalReleaseDate = networkDateStringToDate(originalReleaseDate).timeInMillis()
+        originalReleaseDate =  networkDateStringToDate(originalReleaseDate).timeInMillis(),
+        expectedReleaseYear = expectedReleaseYear ?: -1,
+        expectedReleaseQuarter = expectedReleaseQuarter ?: -1,
+        expectedReleaseMonth = expectedReleaseMonth?.plus(1) ?: -1,
+        expectedReleaseDay = expectedReleaseDay ?: -1
     )
 }
 

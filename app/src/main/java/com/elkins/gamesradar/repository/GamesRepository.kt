@@ -1,6 +1,5 @@
 package com.elkins.gamesradar.repository
 
-import android.text.format.Time
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.elkins.gamesradar.database.DatabaseGame
@@ -10,7 +9,6 @@ import com.elkins.gamesradar.network.asDatabaseModel
 import com.elkins.gamesradar.utility.originalReleaseDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
 import java.util.*
 
 class GamesRepository(private val database: GamesDatabase) {
@@ -18,21 +16,46 @@ class GamesRepository(private val database: GamesDatabase) {
     val games: LiveData<List<DatabaseGame>> = database.gamesDao.getGames()
 
     suspend fun getGames() {
+
         withContext(Dispatchers.IO) {
+
             database.gamesDao.clearDatabase() // Clear database for testing
 
-            val response = GiantBombApi.retrofitService.getAllGames(
-                apikey = "66e90279e18122006ea7d509821c519bb14bfe1d",
-                filter = testFilter(),
-                sort = getSort())
+            var totalGamesToAdd = -1
+            var totalGamesAdded = 0
+            val filter = testFilter()
 
-            if(response.body() != null) {
-                //Insert into database
-                database.gamesDao.insertAll(response.body()!!.results.map {
-                    it.asDatabaseModel()
-                })
-            }
-            Log.d("Response Body", response.body().toString())
+            do {
+                val response = GiantBombApi.retrofitService.getAllGames(
+                    apikey = "66e90279e18122006ea7d509821c519bb14bfe1d",
+                    offset = totalGamesAdded,
+                    filter = filter
+                )
+
+                if (response.body() != null) {
+
+                    // Determine how many games to add during the first loop
+                    if(totalGamesToAdd == -1) {
+                        totalGamesToAdd = response.body()!!.totalResults
+                    }
+
+                    //Insert into database
+                    database.gamesDao.insertAll(response.body()!!.results.map {
+                        it.asDatabaseModel()
+                    })
+
+                    totalGamesAdded += response.body()!!.results.size
+
+                    Log.d(
+                        "Response Body", "Offset: ${response.body()!!.offset}" +
+                                ", Total Games: ${response.body()!!.totalResults}" +
+                                ", GamesAdded: $totalGamesAdded"
+                    )
+                } else {
+                    Log.d("Repository", "Response body null")
+                    break
+                }
+            } while(totalGamesAdded < 100) //totalGamesToAdd)
         }
     }
 
@@ -57,6 +80,7 @@ class GamesRepository(private val database: GamesDatabase) {
         val startingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
         calendar.timeInMillis = System.currentTimeMillis()
+        calendar.add(Calendar.YEAR, Calendar.YEAR+10)
         val endingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
         return "original_release_date:" + "${startingReleaseDate}|${endingReleaseDate}"

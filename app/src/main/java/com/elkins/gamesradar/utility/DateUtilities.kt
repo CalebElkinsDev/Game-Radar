@@ -5,6 +5,7 @@ import java.util.*
 
 
 val originalReleaseDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+val originalReleaseDateDisplayFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
 
 class DateUtilities {
 

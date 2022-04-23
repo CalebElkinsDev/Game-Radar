@@ -11,7 +11,7 @@ import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class GamesListViewModel(private val application: Application) : ViewModel() {
+class GamesListViewModel(application: Application) : ViewModel() {
 
     private val gamesRepository = GamesRepository(getDatabase(application))
 
@@ -19,6 +19,7 @@ class GamesListViewModel(private val application: Application) : ViewModel() {
 
 
     init {
+        // TODO Check if database needs updated beforehand
         viewModelScope.launch {
             try {
                 gamesRepository.getGames()

@@ -40,7 +40,8 @@ interface ApiServices {
         @Query("api_key") apikey: String,
         @Query("format") format: String = "json",
         @Query("filter") filter: String,
-        @Query("sort") sort: String
+        @Query("sort") sort: String = "asc",
+        @Query("offset") offset: Int = 0
     ): Response<GamesResponse>
 }
 
