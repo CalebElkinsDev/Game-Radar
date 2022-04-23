@@ -20,7 +20,7 @@ interface GamesDao {
 }
 
 @TypeConverters(TypeConvertors::class)
-@Database(entities = [DatabaseGame::class], version = 7, exportSchema = false)
+@Database(entities = [DatabaseGame::class], version = 8, exportSchema = false)
 abstract class GamesDatabase: RoomDatabase() {
     abstract val gamesDao: GamesDao
 }

@@ -2,6 +2,7 @@ package com.elkins.gamesradar.network
 
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.utility.DateUtilities.Companion.networkDateStringToDate
+import com.elkins.gamesradar.utility.calculateReleaseTimeInMillis
 import com.elkins.gamesradar.utility.timeInMillis
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -42,11 +43,12 @@ fun NetworkGame.asDatabaseModel(): DatabaseGame {
             it.abbreviation
         },
         imageUrl = image!!.originalUrl,
-        originalReleaseDate =  networkDateStringToDate(originalReleaseDate).timeInMillis(),
+        originalReleaseDate = networkDateStringToDate(originalReleaseDate).timeInMillis(),
         expectedReleaseYear = expectedReleaseYear ?: -1,
         expectedReleaseQuarter = expectedReleaseQuarter ?: -1,
         expectedReleaseMonth = expectedReleaseMonth?.plus(1) ?: -1,
-        expectedReleaseDay = expectedReleaseDay ?: -1
+        expectedReleaseDay = expectedReleaseDay ?: -1,
+        releaseDateInMillis = calculateReleaseTimeInMillis()
     )
 }
 

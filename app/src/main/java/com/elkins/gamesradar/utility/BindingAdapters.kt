@@ -11,7 +11,7 @@ import java.time.Month
 import java.util.*
 
 
-// Use Glide to load a movie's poster as a thumbnail for the movie list
+// Use Glide to load a game's image from url
 @BindingAdapter("thumbnail")
 fun fetchImage(view: ImageView, src: String?) {
     src?.let {
@@ -31,7 +31,6 @@ fun fetchImage(view: ImageView, src: String?) {
 fun TextView.displayReleaseDate(game: DatabaseGame) {
 
     game.run {
-
         if(originalReleaseDate > 0) {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = game.originalReleaseDate
@@ -50,10 +49,9 @@ fun TextView.displayReleaseDate(game: DatabaseGame) {
         } else if (expectedReleaseMonth > 0 && expectedReleaseYear > 0) {
 
             val calendar = Calendar.getInstance()
-            val monthDate = SimpleDateFormat("MMMM")
             calendar.set(Calendar.MONTH, expectedReleaseMonth)
 
-            val release = "${monthDate.format(calendar.time)}, $expectedReleaseYear"
+            val release = "${monthOnlyDateFormat.format(calendar.time)}, $expectedReleaseYear"
             text = release
 
         } else if(expectedReleaseQuarter > 0) {
@@ -64,5 +62,4 @@ fun TextView.displayReleaseDate(game: DatabaseGame) {
             text = "TBA"
         }
     }
-
 }

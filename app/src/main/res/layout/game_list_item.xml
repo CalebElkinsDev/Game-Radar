@@ -58,7 +58,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gameName"
-                app:releaseDate="@{game}"
+                android:text="@{String.valueOf(game.releaseDateInMillis)}"
                 tools:text="Release Date" />
 
             <com.google.android.flexbox.FlexboxLayout
