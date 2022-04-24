@@ -13,7 +13,12 @@ import java.util.*
 
 class GamesRepository(private val database: GamesDatabase) {
 
+    enum class DateFilter {
+        UPCOMING, PAST_MONTH, PAST_YEAR
+    }
+
     val games: LiveData<List<DatabaseGame>> = database.gamesDao.getGames()
+    private val currentDateFilter: DateFilter = DateFilter.PAST_YEAR
 
     suspend fun getGames() {
 
@@ -55,7 +60,7 @@ class GamesRepository(private val database: GamesDatabase) {
                     Log.d("Repository", "Response body null")
                     break
                 }
-            } while(totalGamesAdded < 100) //totalGamesToAdd)
+            } while(totalGamesAdded < 1000) //totalGamesToAdd)
         }
     }
 
@@ -75,13 +80,38 @@ class GamesRepository(private val database: GamesDatabase) {
     private fun filterReleaseDates(): String {
 
         val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar.add(Calendar.YEAR, -1)
-        val startingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar.add(Calendar.YEAR, Calendar.YEAR+10)
-        val endingReleaseDate = originalReleaseDateFormat.format(calendar.time)
+        /* Get the start time for filter */
+        val startingReleaseDate = when(currentDateFilter) {
+            DateFilter.UPCOMING -> {
+                calendar.timeInMillis = System.currentTimeMillis()
+                calendar.add(Calendar.MONTH, -3)
+                originalReleaseDateFormat.format(calendar.time)
+            }
+            DateFilter.PAST_MONTH -> {
+                calendar.timeInMillis = System.currentTimeMillis()
+                calendar.add(Calendar.MONTH, -1)
+                originalReleaseDateFormat.format(calendar.time)
+            }
+            DateFilter.PAST_YEAR -> {
+                calendar.timeInMillis = System.currentTimeMillis()
+                calendar.add(Calendar.YEAR, -1)
+                originalReleaseDateFormat.format(calendar.time)
+            }
+        }
+
+        // Get the end time for the filter
+        val endingReleaseDate = when(currentDateFilter) {
+            DateFilter.UPCOMING -> {
+                calendar.timeInMillis = System.currentTimeMillis()
+                calendar.add(Calendar.YEAR, Calendar.YEAR+10)
+                originalReleaseDateFormat.format(calendar.time)
+            }
+            DateFilter.PAST_MONTH, DateFilter.PAST_YEAR -> {
+                calendar.timeInMillis = System.currentTimeMillis()
+                originalReleaseDateFormat.format(calendar.time)
+            }
+        }
 
         return "original_release_date:" + "${startingReleaseDate}|${endingReleaseDate}"
     }

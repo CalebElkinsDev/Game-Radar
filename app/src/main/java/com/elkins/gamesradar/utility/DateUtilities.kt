@@ -44,9 +44,9 @@ fun Date?.timeInMillis(): Long {
  * expected release time in milliseconds */
 fun NetworkGame.calculateReleaseTimeInMillis(): Long {
 
-    /* Determine if the game has an originalReleaseDate set already. If so, format the date
-     * and return the timiInMillis of the Date */
     if(this.originalReleaseDate != null) {
+        /* Determine if the game has an originalReleaseDate set already. If so, format the date
+         * and return the timiInMillis of the Date */
         return try {
             val date = originalReleaseDateFormat.parse(this.originalReleaseDate)
             val calendar = Calendar.getInstance()
@@ -76,7 +76,7 @@ fun NetworkGame.calculateReleaseTimeInMillis(): Long {
 
     } else if(expectedReleaseQuarter != null) {
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, expectedReleaseQuarter * 4)
+        calendar.set(Calendar.MONTH, expectedReleaseQuarter * 3)
         calendar.set(Calendar.YEAR, expectedReleaseYear!!)
 
         return calendar.timeInMillis

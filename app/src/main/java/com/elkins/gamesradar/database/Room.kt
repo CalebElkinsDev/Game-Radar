@@ -8,7 +8,7 @@ import androidx.room.*
 @Dao
 interface GamesDao {
     // Get all games
-    @Query("SELECT * FROM databasegame")
+    @Query("SELECT * FROM databasegame ORDER BY releaseDateInMillis, name")
     fun getGames(): LiveData<List<DatabaseGame>>
 
     /* Insert a list of games to the database that are not already present */
