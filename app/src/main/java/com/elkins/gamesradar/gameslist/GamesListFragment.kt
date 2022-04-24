@@ -1,26 +1,21 @@
 package com.elkins.gamesradar.gameslist
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
-import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+
 
 /**
  * A fragment representing a list of Items.
@@ -64,37 +59,29 @@ class GamesListFragment : Fragment() {
 
 
         // Setup buttons for modifying filter: TODO remove after testing
-        binding.upcomingGames.setOnClickListener {
-            val currentDateFilter = GamesRepository.DateFilter.UPCOMING
-            val newFilter = DatabaseFilter(
-                getDatabaseFilterStartDate(currentDateFilter),
-                getDatabaseFilterEndDate(currentDateFilter)
-            )
-            viewModel.updateFilter(newFilter)
-            binding.list.scrollToPosition(0)
-        }
-        binding.pastMonth.setOnClickListener {
-            val currentDateFilter = GamesRepository.DateFilter.PAST_MONTH
-            val newFilter = DatabaseFilter(
-                getDatabaseFilterStartDate(currentDateFilter),
-                getDatabaseFilterEndDate(currentDateFilter)
-            )
-            viewModel.updateFilter(newFilter)
-            binding.list.scrollToPosition(0)
-        }
-        binding.pastYear.setOnClickListener {
-            val currentDateFilter = GamesRepository.DateFilter.PAST_YEAR
-            val newFilter = DatabaseFilter(
-                getDatabaseFilterStartDate(currentDateFilter),
-                getDatabaseFilterEndDate(currentDateFilter)
-            )
-            viewModel.updateFilter(newFilter)
-            binding.list.scrollToPosition(0)
-        }
+        binding.upcomingGames.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.UPCOMING) }
+        binding.pastMonth.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_MONTH) }
+        binding.pastYear.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_YEAR) }
 
         return binding.root
     }
 
+    private fun updateFilterTest(releaseWindow: GamesRepository.ReleaseWindow) {
+        val databaseFilter = DatabaseFilter(
+            getDatabaseFilterStartDate(releaseWindow),
+            getDatabaseFilterEndDate(releaseWindow)
+        )
+        viewModel.updateFilter(databaseFilter)
+
+        object : CountDownTimer(100, 100) {
+            override fun onTick(millisUntilFinished: Long) { }
+
+            override fun onFinish() {
+                binding.list.scrollToPosition(8)
+                binding.list.smoothScrollToPosition(0)
+            }
+        }.start()
+    }
 
     companion object {
 

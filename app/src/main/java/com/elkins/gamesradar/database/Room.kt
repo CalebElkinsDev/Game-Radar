@@ -8,9 +8,6 @@ import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 interface GamesDao {
-    // Get all games
-//    @Query("SELECT * FROM databasegame ORDER BY releaseDateInMillis, name")
-//    fun getGames(): LiveData<List<DatabaseGame>>
 
     // Get Games with query
     @RawQuery(observedEntities = [DatabaseGame::class])

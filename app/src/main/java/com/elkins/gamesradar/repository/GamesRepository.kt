@@ -8,6 +8,8 @@ import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
 import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.network.asDatabaseModel
+import com.elkins.gamesradar.utility.DatabaseConstants
+import com.elkins.gamesradar.utility.NetworkObjectConstants
 import com.elkins.gamesradar.utility.originalReleaseDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,16 +17,16 @@ import java.util.*
 
 class GamesRepository(private val database: GamesDatabase) {
 
-    enum class DateFilter {
+    enum class ReleaseWindow {
         UPCOMING, PAST_MONTH, PAST_YEAR
     }
 
-    private val currentDateFilter: DateFilter = DateFilter.UPCOMING
+    private val currentReleaseWindow: ReleaseWindow = ReleaseWindow.UPCOMING
 
     // TODO save and load filter from prefs
     var databaseFilter: MutableLiveData<DatabaseFilter> = MutableLiveData(DatabaseFilter(
-        getDatabaseFilterStartDate(currentDateFilter),
-        getDatabaseFilterEndDate(currentDateFilter)
+        getDatabaseFilterStartDate(currentReleaseWindow),
+        getDatabaseFilterEndDate(currentReleaseWindow)
     ))
 
 
@@ -36,7 +38,7 @@ class GamesRepository(private val database: GamesDatabase) {
 
             var totalGamesToAdd = -1
             var totalGamesAdded = 0
-            val filter = testFilter()
+            val filter = filterReleaseDates()
 
             do {
                 val response = GiantBombApi.retrofitService.getAllGames(
@@ -83,26 +85,14 @@ class GamesRepository(private val database: GamesDatabase) {
     /** Construct a SQL query based on the [DatabaseFilter] to retrieve filtered results from the
      * database. */
     private fun buildGamesListQuery(filter: DatabaseFilter): SimpleSQLiteQuery {
-        val querySelect = "SELECT * FROM databasegame "
+        val querySelect = "SELECT * FROM ${DatabaseConstants.GAMES_TABLE_NAME} "
 
-        val queryWhere = "WHERE releaseDateInMillis > ${filter.startDate} " +
-                "AND releaseDateInMillis < ${filter.endDate} "
+        val queryWhere = "WHERE ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} > ${filter.startDate} " +
+                "AND ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} < ${filter.endDate} "
 
-        val queryOrder = "ORDER BY releaseDateInMillis ${filter.sortOrder}"
+        val queryOrder = "ORDER BY ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} ${filter.sortOrder}"
 
         return SimpleSQLiteQuery(querySelect + queryWhere + queryOrder)
-    }
-
-    private fun getSort(): String {
-        return filterSortOrder(true)
-    }
-
-    private fun testFilter(): String {
-        return filterReleaseDates()
-    }
-
-    private fun filterSortOrder(sortAscending: Boolean): String {
-        return "original_release_date:" + if(sortAscending) "asc" else "desc"
     }
 
     /** Return the filter field for original_release_date */
@@ -111,37 +101,15 @@ class GamesRepository(private val database: GamesDatabase) {
         val calendar: Calendar = Calendar.getInstance()
 
         /* Get the start time for filter */
-        val startingReleaseDate = when(currentDateFilter) {
-            DateFilter.UPCOMING -> {
-                calendar.timeInMillis = System.currentTimeMillis()
-                calendar.add(Calendar.MONTH, -3)
-                originalReleaseDateFormat.format(calendar.time)
-            }
-            DateFilter.PAST_MONTH -> {
-                calendar.timeInMillis = System.currentTimeMillis()
-                calendar.add(Calendar.MONTH, -1)
-                originalReleaseDateFormat.format(calendar.time)
-            }
-            DateFilter.PAST_YEAR -> {
-                calendar.timeInMillis = System.currentTimeMillis()
-                calendar.add(Calendar.YEAR, -1)
-                originalReleaseDateFormat.format(calendar.time)
-            }
-        }
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.add(Calendar.YEAR, -1)
+        val startingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
         // Get the end time for the filter
-        val endingReleaseDate = when(currentDateFilter) {
-            DateFilter.UPCOMING -> {
-                calendar.timeInMillis = System.currentTimeMillis()
-                calendar.add(Calendar.YEAR, Calendar.YEAR+10)
-                originalReleaseDateFormat.format(calendar.time)
-            }
-            DateFilter.PAST_MONTH, DateFilter.PAST_YEAR -> {
-                calendar.timeInMillis = System.currentTimeMillis()
-                originalReleaseDateFormat.format(calendar.time)
-            }
-        }
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.add(Calendar.YEAR, Calendar.YEAR+10)
+        val endingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
-        return "original_release_date:" + "${startingReleaseDate}|${endingReleaseDate}"
+        return NetworkObjectConstants.ORIGINAL_RELEASE_DATE + "${startingReleaseDate}|${endingReleaseDate}"
     }
 }

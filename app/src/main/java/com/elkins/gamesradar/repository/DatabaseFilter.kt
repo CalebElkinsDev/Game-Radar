@@ -16,25 +16,25 @@ class DatabaseFilter(@Bindable var startDate: String,
 
 /**
  * Get the string value of the starting time for filtering games
- * @param dateFilter: Enum for determining what the start date will be
+ * @param releaseWindow: Enum for determining what the start date will be
  */
-fun getDatabaseFilterStartDate(dateFilter: GamesRepository.DateFilter): String {
+fun getDatabaseFilterStartDate(releaseWindow: GamesRepository.ReleaseWindow): String {
 
     val calendar: Calendar = Calendar.getInstance()
 
     /* Get the start time for filter in milliseconds */
-    val startingReleaseDate = when(dateFilter) {
-        GamesRepository.DateFilter.UPCOMING -> {
+    val startingReleaseDate = when(releaseWindow) {
+        GamesRepository.ReleaseWindow.UPCOMING -> {
             calendar.timeInMillis = System.currentTimeMillis()
             calendar.add(Calendar.MONTH, -3)
             calendar.timeInMillis
         }
-        GamesRepository.DateFilter.PAST_MONTH -> {
+        GamesRepository.ReleaseWindow.PAST_MONTH -> {
             calendar.timeInMillis = System.currentTimeMillis()
             calendar.add(Calendar.MONTH, -1)
             calendar.timeInMillis
         }
-        GamesRepository.DateFilter.PAST_YEAR -> {
+        GamesRepository.ReleaseWindow.PAST_YEAR -> {
             calendar.timeInMillis = System.currentTimeMillis()
             calendar.add(Calendar.YEAR, -1)
             calendar.timeInMillis
@@ -46,20 +46,20 @@ fun getDatabaseFilterStartDate(dateFilter: GamesRepository.DateFilter): String {
 
 /**
  * Get the string value of the ending time for filtering games
- * @param dateFilter: Enum for determining what the end date will be
+ * @param releaseWindow: Enum for determining what the end date will be
  */
-fun getDatabaseFilterEndDate(dateFilter: GamesRepository.DateFilter): String {
+fun getDatabaseFilterEndDate(releaseWindow: GamesRepository.ReleaseWindow): String {
 
     val calendar: Calendar = Calendar.getInstance()
 
     // Get the end time for the filter in milliseconds
-    val endingReleaseDate = when(dateFilter) {
-        GamesRepository.DateFilter.UPCOMING -> {
+    val endingReleaseDate = when(releaseWindow) {
+        GamesRepository.ReleaseWindow.UPCOMING -> {
             calendar.timeInMillis = System.currentTimeMillis()
             calendar.add(Calendar.YEAR, Calendar.YEAR+10)
             calendar.timeInMillis
         }
-        GamesRepository.DateFilter.PAST_MONTH, GamesRepository.DateFilter.PAST_YEAR -> {
+        GamesRepository.ReleaseWindow.PAST_MONTH, GamesRepository.ReleaseWindow.PAST_YEAR -> {
             calendar.timeInMillis = System.currentTimeMillis()
             originalReleaseDateFormat.format(calendar.time)
             calendar.timeInMillis

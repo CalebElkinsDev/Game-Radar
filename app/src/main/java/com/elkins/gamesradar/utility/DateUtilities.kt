@@ -2,14 +2,13 @@ package com.elkins.gamesradar.utility
 
 import android.util.Log
 import com.elkins.gamesradar.network.NetworkGame
-import com.elkins.gamesradar.utility.DateUtilities.Companion.networkDateStringToDate
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 val originalReleaseDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 val originalReleaseDateDisplayFormat = SimpleDateFormat("MMM d, yyyy", Locale.US)
-val monthOnlyDateFormat = SimpleDateFormat("MMMM")
+val monthOnlyDateFormat = SimpleDateFormat("MMMM", Locale.US)
 
 class DateUtilities {
 
