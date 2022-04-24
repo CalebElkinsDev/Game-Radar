@@ -3,13 +3,18 @@ package com.elkins.gamesradar.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 
 
 @Dao
 interface GamesDao {
     // Get all games
-    @Query("SELECT * FROM databasegame ORDER BY releaseDateInMillis, name")
-    fun getGames(): LiveData<List<DatabaseGame>>
+//    @Query("SELECT * FROM databasegame ORDER BY releaseDateInMillis, name")
+//    fun getGames(): LiveData<List<DatabaseGame>>
+
+    // Get Games with query
+    @RawQuery(observedEntities = [DatabaseGame::class])
+    fun getGames(query: SupportSQLiteQuery): LiveData<List<DatabaseGame>>
 
     /* Insert a list of games to the database that are not already present */
     @Insert(onConflict = OnConflictStrategy.IGNORE)

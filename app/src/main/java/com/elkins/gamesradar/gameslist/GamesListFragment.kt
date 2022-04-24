@@ -8,11 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
 import com.elkins.gamesradar.network.GiantBombApi
+import com.elkins.gamesradar.repository.DatabaseFilter
+import com.elkins.gamesradar.repository.GamesRepository
+import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
+import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -39,14 +45,14 @@ class GamesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_games_list, container, false)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            view.layoutManager = GridLayoutManager(context, columnCount)
-            adapter = GamesListRecyclerViewAdapter()
-            view.adapter = adapter
-        }
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_games_list, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        adapter = GamesListRecyclerViewAdapter()
+        binding.list.adapter = adapter
+        binding.list.layoutManager = GridLayoutManager(context, columnCount)
+
 
         // Initialize ViewModel
         val viewModelFactory = GamesListViewModelFactory(requireActivity().application)
@@ -56,7 +62,37 @@ class GamesListFragment : Fragment() {
             adapter.submitList(it)
         }
 
-        return view
+
+        // Setup buttons for modifying filter: TODO remove after testing
+        binding.upcomingGames.setOnClickListener {
+            val currentDateFilter = GamesRepository.DateFilter.UPCOMING
+            val newFilter = DatabaseFilter(
+                getDatabaseFilterStartDate(currentDateFilter),
+                getDatabaseFilterEndDate(currentDateFilter)
+            )
+            viewModel.updateFilter(newFilter)
+            binding.list.scrollToPosition(0)
+        }
+        binding.pastMonth.setOnClickListener {
+            val currentDateFilter = GamesRepository.DateFilter.PAST_MONTH
+            val newFilter = DatabaseFilter(
+                getDatabaseFilterStartDate(currentDateFilter),
+                getDatabaseFilterEndDate(currentDateFilter)
+            )
+            viewModel.updateFilter(newFilter)
+            binding.list.scrollToPosition(0)
+        }
+        binding.pastYear.setOnClickListener {
+            val currentDateFilter = GamesRepository.DateFilter.PAST_YEAR
+            val newFilter = DatabaseFilter(
+                getDatabaseFilterStartDate(currentDateFilter),
+                getDatabaseFilterEndDate(currentDateFilter)
+            )
+            viewModel.updateFilter(newFilter)
+            binding.list.scrollToPosition(0)
+        }
+
+        return binding.root
     }
 
 

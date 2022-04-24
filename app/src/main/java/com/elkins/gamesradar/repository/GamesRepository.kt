@@ -2,6 +2,8 @@ package com.elkins.gamesradar.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
 import com.elkins.gamesradar.network.GiantBombApi
@@ -17,10 +19,16 @@ class GamesRepository(private val database: GamesDatabase) {
         UPCOMING, PAST_MONTH, PAST_YEAR
     }
 
-    val games: LiveData<List<DatabaseGame>> = database.gamesDao.getGames()
-    private val currentDateFilter: DateFilter = DateFilter.PAST_YEAR
+    private val currentDateFilter: DateFilter = DateFilter.UPCOMING
 
-    suspend fun getGames() {
+    // TODO save and load filter from prefs
+    var databaseFilter: MutableLiveData<DatabaseFilter> = MutableLiveData(DatabaseFilter(
+        getDatabaseFilterStartDate(currentDateFilter),
+        getDatabaseFilterEndDate(currentDateFilter)
+    ))
+
+
+    suspend fun getGamesFromNetwork() {
 
         withContext(Dispatchers.IO) {
 
@@ -62,6 +70,27 @@ class GamesRepository(private val database: GamesDatabase) {
                 }
             } while(totalGamesAdded < 1000) //totalGamesToAdd)
         }
+    }
+
+    /** Get all games in the database that meet the criteria of the [DatabaseFilter] */
+    fun getGames(filter: DatabaseFilter): LiveData<List<DatabaseGame>> {
+
+        val query = buildGamesListQuery(filter)
+
+        return database.gamesDao.getGames(query)
+    }
+
+    /** Construct a SQL query based on the [DatabaseFilter] to retrieve filtered results from the
+     * database. */
+    private fun buildGamesListQuery(filter: DatabaseFilter): SimpleSQLiteQuery {
+        val querySelect = "SELECT * FROM databasegame "
+
+        val queryWhere = "WHERE releaseDateInMillis > ${filter.startDate} " +
+                "AND releaseDateInMillis < ${filter.endDate} "
+
+        val queryOrder = "ORDER BY releaseDateInMillis ${filter.sortOrder}"
+
+        return SimpleSQLiteQuery(querySelect + queryWhere + queryOrder)
     }
 
     private fun getSort(): String {
