@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,6 +44,13 @@ interface ApiServices {
         @Query("sort") sort: String = "asc",
         @Query("offset") offset: Int = 0
     ): Response<GamesResponse>
+
+    @GET("game/{guid}")
+    suspend fun getGameById(
+        @Path("guid") guid: String,
+        @Query("api_key") apikey: String,
+        @Query("format") format: String = "json",
+    ): Response<GameResponse>
 }
 
 object GiantBombApi {

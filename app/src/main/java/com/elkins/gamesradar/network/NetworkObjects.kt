@@ -7,7 +7,8 @@ import com.elkins.gamesradar.utility.timeInMillis
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-/* Response class for calls to the "games" endpoint */
+
+/** Response class for calls to the "games" endpoint of the API */
 @JsonClass(generateAdapter = true)
 data class GamesResponse(
     @Json(name = "status_code")val statusCode: Int,
@@ -19,7 +20,7 @@ data class GamesResponse(
     val results: List<NetworkGame>
 )
 
-/* Individual game from the results of the "games' response */
+/** Individual game from the results of the [GamesResponse] */
 @JsonClass(generateAdapter = true)
 data class NetworkGame(
     val id: Long,
@@ -32,6 +33,51 @@ data class NetworkGame(
     @Json(name = "expected_release_quarter") val expectedReleaseQuarter: Int?,
     @Json(name = "expected_release_month") val expectedReleaseMonth: Int?,
     @Json(name = "expected_release_day") val expectedReleaseDay: Int?
+)
+
+/**
+ * Similar to the [GamesResponse] network object, but returns a single result of
+ * [NetworkGameDetail]. Used with the "game" endpoint of the API.
+ */
+@JsonClass(generateAdapter = true)
+data class GameResponse(
+    @Json(name = "status_code")val statusCode: Int,
+    val error: String?,
+    @Json(name = "number_of_total_results") val totalResults: Int,
+    @Json(name = "number_of_page_results") val totalPages: Int,
+    val limit: Int,
+    val offset: Int,
+    val results: NetworkGameDetail
+)
+
+/** Class containing information for a game's details. Contains the same fields as [NetworkGame]
+ * plus additional ones. */
+@JsonClass(generateAdapter = true)
+data class NetworkGameDetail(
+    val id: Long,
+    val guid: String,
+    val name: String,
+    val platforms: List<NetworkPlatform>?,
+    val image: NetworkImage?,
+    @Json(name = "original_release_date") val originalReleaseDate: String?,
+    @Json(name = "expected_release_year") val expectedReleaseYear: Int?,
+    @Json(name = "expected_release_quarter") val expectedReleaseQuarter: Int?,
+    @Json(name = "expected_release_month") val expectedReleaseMonth: Int?,
+    @Json(name = "expected_release_day") val expectedReleaseDay: Int?,
+
+    val description: String?,
+    val developers: List<GenericObject>?,
+    val genres: List<GenericObject>?,
+    val publishers: List<GenericObject>?,
+)
+
+/** Used by several fields to contain basic information*/
+@JsonClass(generateAdapter = true)
+data class GenericObject(
+    @Json(name = "api_detail_url") val apiDetailUrl: String?,
+    val id: Int?,
+    val name: String?,
+    @Json(name = "site_detail_url") val siteDetailUrl: String?
 )
 
 fun NetworkGame.asDatabaseModel(): DatabaseGame {
