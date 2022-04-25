@@ -14,8 +14,8 @@ import com.elkins.gamesradar.databinding.GameListItemBinding
 /**
  * [RecyclerView.Adapter] that displays [DatabaseGame] objects.
  */
-class GamesListRecyclerViewAdapter: ListAdapter<DatabaseGame,
-        GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
+class GamesListRecyclerViewAdapter(private val detailsListener: ClickListener):
+    ListAdapter<DatabaseGame, GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : GameViewHolder {
         return GameViewHolder.from(parent)
@@ -24,6 +24,11 @@ class GamesListRecyclerViewAdapter: ListAdapter<DatabaseGame,
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
+
+        // Bind callback for navigating to game details
+        holder.itemView.setOnClickListener {
+            detailsListener.onClick(item)
+        }
     }
 
 
@@ -59,13 +64,19 @@ class GamesListRecyclerViewAdapter: ListAdapter<DatabaseGame,
     }
 
 
+    /** ItemCallback for list sorting in the recycler view */
     class GameDiffCallback : DiffUtil.ItemCallback<DatabaseGame>() {
         override fun areItemsTheSame(oldItem: DatabaseGame, newItem: DatabaseGame): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: DatabaseGame, newItem: DatabaseGame): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.releaseDateInMillis == newItem.releaseDateInMillis
         }
     }
+}
+
+/** Simple callback class used for handling clicks on items in the list. */
+class ClickListener(val clickListener: (game: DatabaseGame) -> Unit) {
+    fun onClick(game: DatabaseGame) = clickListener(game)
 }

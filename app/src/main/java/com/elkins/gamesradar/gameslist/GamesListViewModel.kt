@@ -8,6 +8,7 @@ import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.lang.Exception
 
 class GamesListViewModel(application: Application) : ViewModel() {
 
@@ -33,6 +34,16 @@ class GamesListViewModel(application: Application) : ViewModel() {
     /** Update the repository's database filter options*/
     fun updateFilter(filter: DatabaseFilter) {
         gamesRepository.databaseFilter.value = filter
+    }
+
+    fun getGameById(guid: String) {
+        viewModelScope.launch {
+            try {
+                gamesRepository.fetchGameById(guid)
+            } catch (e: Exception) {
+
+            }
+        }
     }
 }
 

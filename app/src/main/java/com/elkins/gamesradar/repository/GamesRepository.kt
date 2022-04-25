@@ -7,6 +7,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
 import com.elkins.gamesradar.network.GiantBombApi
+import com.elkins.gamesradar.network.NetworkGameDetail
 import com.elkins.gamesradar.network.asDatabaseModel
 import com.elkins.gamesradar.utility.DatabaseConstants
 import com.elkins.gamesradar.utility.NetworkObjectConstants
@@ -16,6 +17,8 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class GamesRepository(private val database: GamesDatabase) {
+
+    private val apikey = "66e90279e18122006ea7d509821c519bb14bfe1d"
 
     enum class ReleaseWindow {
         UPCOMING, PAST_MONTH, PAST_YEAR
@@ -42,7 +45,7 @@ class GamesRepository(private val database: GamesDatabase) {
 
             do {
                 val response = GiantBombApi.retrofitService.getAllGames(
-                    apikey = "66e90279e18122006ea7d509821c519bb14bfe1d",
+                    apikey = apikey,
                     offset = totalGamesAdded,
                     filter = filter
                 )
@@ -71,6 +74,15 @@ class GamesRepository(private val database: GamesDatabase) {
                     break
                 }
             } while(totalGamesAdded < 1000) //totalGamesToAdd)
+        }
+    }
+
+    suspend fun fetchGameById(guid: String)  {
+        withContext(Dispatchers.IO) {
+            val response = GiantBombApi.retrofitService.getGameById(guid = guid, apikey = apikey)
+            if(response.body() != null) {
+                Log.d("Details", response.body()!!.results.toString())
+            }
         }
     }
 

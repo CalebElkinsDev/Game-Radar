@@ -44,10 +44,7 @@ class GamesListFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_games_list, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        adapter = GamesListRecyclerViewAdapter()
-        binding.list.adapter = adapter
-        binding.list.layoutManager = GridLayoutManager(context, columnCount)
-
+        initializeRecyclerView()
 
         // Initialize ViewModel
         val viewModelFactory = GamesListViewModelFactory(requireActivity().application)
@@ -57,13 +54,21 @@ class GamesListFragment : Fragment() {
             adapter.submitList(it)
         }
 
-
         // Setup buttons for modifying filter: TODO remove after testing
         binding.upcomingGames.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.UPCOMING) }
         binding.pastMonth.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_MONTH) }
         binding.pastYear.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_YEAR) }
 
         return binding.root
+    }
+
+    /** Helper function for setting up the recycler view that holds game items */
+    private fun initializeRecyclerView() {
+        adapter = GamesListRecyclerViewAdapter(ClickListener {
+            viewModel.getGameById(it.guid) // TODO Navigate to the game
+        })
+        binding.list.adapter = adapter
+        binding.list.layoutManager = GridLayoutManager(context, columnCount)
     }
 
     private fun updateFilterTest(releaseWindow: GamesRepository.ReleaseWindow) {
