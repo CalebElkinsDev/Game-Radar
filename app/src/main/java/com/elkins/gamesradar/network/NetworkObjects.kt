@@ -1,6 +1,7 @@
 package com.elkins.gamesradar.network
 
 import com.elkins.gamesradar.database.DatabaseGame
+import com.elkins.gamesradar.gamedetails.GameDetails
 import com.elkins.gamesradar.utility.DateUtilities.Companion.networkDateStringToDate
 import com.elkins.gamesradar.utility.calculateReleaseTimeInMillis
 import com.elkins.gamesradar.utility.timeInMillis
@@ -59,6 +60,7 @@ data class NetworkGameDetail(
     val name: String,
     val platforms: List<NetworkPlatform>?,
     val image: NetworkImage?,
+    val images: List<NetworkImage>?,
     @Json(name = "original_release_date") val originalReleaseDate: String?,
     @Json(name = "expected_release_year") val expectedReleaseYear: Int?,
     @Json(name = "expected_release_quarter") val expectedReleaseQuarter: Int?,
@@ -76,7 +78,7 @@ data class NetworkGameDetail(
 data class GenericObject(
     @Json(name = "api_detail_url") val apiDetailUrl: String?,
     val id: Int?,
-    val name: String?,
+    val name: String,
     @Json(name = "site_detail_url") val siteDetailUrl: String?
 )
 
@@ -98,6 +100,25 @@ fun NetworkGame.asDatabaseModel(): DatabaseGame {
     )
 }
 
+fun NetworkGameDetail.asDomainModel(): GameDetails {
+    return GameDetails(
+        id = id,
+        guid = guid,
+        name = name,
+        platforms = platforms?.map { it.abbreviation },
+        imageUrl = image!!.originalUrl,
+        images = images?.map { it.originalUrl },
+        originalReleaseDate = networkDateStringToDate(originalReleaseDate).timeInMillis(),
+        expectedReleaseYear = expectedReleaseYear ?: -1,
+        expectedReleaseQuarter = expectedReleaseQuarter ?: -1,
+        expectedReleaseMonth = expectedReleaseMonth?.plus(1) ?: -1,
+        expectedReleaseDay = expectedReleaseDay ?: -1,
+        description = description,
+        genres = genres?.map { it.name },
+        publishers = publishers?.map { it.name },
+    )
+}
+
 /* Network class containing links for a game's images */
 @JsonClass(generateAdapter = true)
 data class NetworkImage(
@@ -109,7 +130,7 @@ data class NetworkImage(
     @Json(name = "super_url") val superUrl: String?,
     @Json(name = "thumb_url") val thumbUrl: String?,
     @Json(name = "tiny_url") val tinyUrl: String?,
-    @Json(name = "original_url") val originalUrl: String?
+    @Json(name = "original_url") val originalUrl: String
 )
 
 @JsonClass(generateAdapter = true)

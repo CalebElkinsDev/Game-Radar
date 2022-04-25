@@ -18,5 +18,9 @@
         android:id="@+id/gameDetailsFragment"
         android:name="com.elkins.gamesradar.gamedetails.GameDetailsFragment"
         android:label="fragment_game_details"
-        tools:layout="@layout/fragment_game_details" />
+        tools:layout="@layout/fragment_game_details" >
+        <argument
+            android:name="guid"
+            app:argType="string" />
+    </fragment>
 </navigation>

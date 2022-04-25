@@ -1,13 +1,12 @@
 package com.elkins.gamesradar.gameslist
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
+import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.lang.Exception
 
 class GamesListViewModel(application: Application) : ViewModel() {
@@ -17,6 +16,9 @@ class GamesListViewModel(application: Application) : ViewModel() {
     val games = Transformations.switchMap(gamesRepository.databaseFilter) {
         gamesRepository.getGames(it)
     }
+
+    var gameToNavigateTo = MutableLiveData<String?>()
+
 
 
     init {
@@ -44,6 +46,14 @@ class GamesListViewModel(application: Application) : ViewModel() {
 
             }
         }
+    }
+
+    fun startNavigateToDetailsPage(guid: String) {
+        gameToNavigateTo.postValue(guid)
+    }
+
+    fun navigateToDetailsPageHandled() {
+        gameToNavigateTo.value = null
     }
 }
 

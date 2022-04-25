@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
+import com.elkins.gamesradar.gamedetails.GameDetails
 import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.network.NetworkGameDetail
 import com.elkins.gamesradar.network.asDatabaseModel
+import com.elkins.gamesradar.network.asDomainModel
 import com.elkins.gamesradar.utility.DatabaseConstants
 import com.elkins.gamesradar.utility.NetworkObjectConstants
 import com.elkins.gamesradar.utility.originalReleaseDateFormat
@@ -77,13 +79,9 @@ class GamesRepository(private val database: GamesDatabase) {
         }
     }
 
-    suspend fun fetchGameById(guid: String)  {
-        withContext(Dispatchers.IO) {
-            val response = GiantBombApi.retrofitService.getGameById(guid = guid, apikey = apikey)
-            if(response.body() != null) {
-                Log.d("Details", response.body()!!.results.toString())
-            }
-        }
+    suspend fun fetchGameById(guid: String): GameDetails {
+        return GiantBombApi.retrofitService.getGameById(guid = guid, apikey = apikey)
+            .body()!!.results.asDomainModel()
     }
 
     /** Get all games in the database that meet the criteria of the [DatabaseFilter] */

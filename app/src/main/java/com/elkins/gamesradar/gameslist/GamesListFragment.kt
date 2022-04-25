@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
@@ -59,13 +60,22 @@ class GamesListFragment : Fragment() {
         binding.pastMonth.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_MONTH) }
         binding.pastYear.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_YEAR) }
 
+        viewModel.gameToNavigateTo.observe(viewLifecycleOwner) {
+            it.let {
+                findNavController().navigate(
+                    GamesListFragmentDirections.actionGamesListFragmentToGameDetailsFragment(it!!)
+                )
+                //viewModel.navigateToDetailsPageHandled() // Event nulling value before navigation completes
+            }
+        }
+
         return binding.root
     }
 
     /** Helper function for setting up the recycler view that holds game items */
     private fun initializeRecyclerView() {
         adapter = GamesListRecyclerViewAdapter(ClickListener {
-            viewModel.getGameById(it.guid) // TODO Navigate to the game
+            viewModel.startNavigateToDetailsPage(it.guid)
         })
         binding.list.adapter = adapter
         binding.list.layoutManager = GridLayoutManager(context, columnCount)
