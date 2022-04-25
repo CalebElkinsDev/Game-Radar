@@ -60,7 +60,7 @@ data class NetworkGameDetail(
     val name: String,
     val platforms: List<NetworkPlatform>?,
     val image: NetworkImage?,
-    val images: List<NetworkImage>?,
+    val images: List<NetworkImageSimple>?,
     @Json(name = "original_release_date") val originalReleaseDate: String?,
     @Json(name = "expected_release_year") val expectedReleaseYear: Int?,
     @Json(name = "expected_release_quarter") val expectedReleaseQuarter: Int?,
@@ -131,6 +131,19 @@ data class NetworkImage(
     @Json(name = "thumb_url") val thumbUrl: String?,
     @Json(name = "tiny_url") val tinyUrl: String?,
     @Json(name = "original_url") val originalUrl: String
+)
+
+/** Used for the images group for a game details. Does not contain all fields as [NetworkImage] */
+@JsonClass(generateAdapter = true)
+data class NetworkImageSimple(
+    @Json(name = "icon_url") val iconUrl: String?,
+    @Json(name = "medium_url") val mediumUrl: String?,
+    @Json(name = "screen_url") val screenUrl: String?,
+    @Json(name = "small_url") val smallUrl: String?,
+    @Json(name = "super_url") val superUrl: String?,
+    @Json(name = "thumb_url") val thumbUrl: String?,
+    @Json(name = "tiny_url") val tinyUrl: String?,
+    @Json(name = "original") val originalUrl: String
 )
 
 @JsonClass(generateAdapter = true)
