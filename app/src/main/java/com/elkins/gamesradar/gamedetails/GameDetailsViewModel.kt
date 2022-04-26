@@ -10,25 +10,34 @@ import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
 
 
-class GameDetailsViewModel(application: Application, guid: String): ViewModel() {
+class GameDetailsViewModel(application: Application): ViewModel() {
 
     private val gamesRepository = GamesRepository(getDatabase(application))
 
-    var gameDetails = MutableLiveData<GameDetails>()
+    var gameDetails = MutableLiveData<GameDetails?>()
 
-    init {
+    /** Download the game details and store in the [gameDetails] LiveData*/
+    fun fetchGameDetails(guid: String) {
         // Download the details of the current game
         viewModelScope.launch {
             gameDetails.value = gamesRepository.fetchGameById(guid)
         }
     }
 
+    /**
+     * Clear the current game details. Prevents previous data from displaying when navigating
+     * to a different game.
+     */
+    fun clearGameDetails() {
+        gameDetails.value = null
+    }
+
 }
 
 /** Simple factory for creating a [GameDetailsViewModel] with application and guid arguments */
-class GamesDetailsViewModelFactory(private val application: Application, private val guid: String)
+class GamesDetailsViewModelFactory(private val application: Application)
     : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return GameDetailsViewModel(application, guid) as T
+        return GameDetailsViewModel(application) as T
     }
 }

@@ -2,6 +2,7 @@ package com.elkins.gamesradar.gameslist
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,11 +62,12 @@ class GamesListFragment : Fragment() {
         binding.pastYear.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_YEAR) }
 
         viewModel.gameToNavigateTo.observe(viewLifecycleOwner) {
-            it.let {
+            if(!it.isNullOrEmpty()) {
+                Log.d("Navigation", "GUID going to = ${it}")
                 findNavController().navigate(
                     GamesListFragmentDirections.actionGamesListFragmentToGameDetailsFragment(it!!)
                 )
-                //viewModel.navigateToDetailsPageHandled() // Event nulling value before navigation completes
+                viewModel.navigateToDetailsPageHandled() // Event nulling value before navigation completes
             }
         }
 

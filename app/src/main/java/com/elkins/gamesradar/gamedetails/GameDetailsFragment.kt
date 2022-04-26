@@ -30,9 +30,12 @@ class GameDetailsFragment : Fragment() {
         guid = args.guid
 
         // Initialize ViewModel
-        val viewModelFactory = GamesDetailsViewModelFactory(requireActivity().application, guid)
+        val viewModelFactory = GamesDetailsViewModelFactory(requireActivity().application)
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
             .get(GameDetailsViewModel::class.java)
+
+        // Have the view model fetch the details for the current game
+        viewModel.fetchGameDetails(guid)
     }
 
     override fun onCreateView(
@@ -56,6 +59,12 @@ class GameDetailsFragment : Fragment() {
                 finishLoading()
             }
         }
+    }
+
+    /** Clear the [GameDetailsViewModel] current game details when leaving the detail fragment */
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clearGameDetails()
     }
 
     /**
