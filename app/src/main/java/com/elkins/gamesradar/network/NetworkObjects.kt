@@ -66,7 +66,7 @@ data class NetworkGameDetail(
     @Json(name = "expected_release_quarter") val expectedReleaseQuarter: Int?,
     @Json(name = "expected_release_month") val expectedReleaseMonth: Int?,
     @Json(name = "expected_release_day") val expectedReleaseDay: Int?,
-
+    val deck: String?,
     val description: String?,
     val developers: List<GenericObject>?,
     val genres: List<GenericObject>?,
@@ -113,8 +113,10 @@ fun NetworkGameDetail.asDomainModel(): GameDetails {
         expectedReleaseQuarter = expectedReleaseQuarter ?: -1,
         expectedReleaseMonth = expectedReleaseMonth?.plus(1) ?: -1,
         expectedReleaseDay = expectedReleaseDay ?: -1,
+        deck = deck,
         description = description,
         genres = genres?.map { it.name },
+        developers = developers?.map { it.name },
         publishers = publishers?.map { it.name },
     )
 }

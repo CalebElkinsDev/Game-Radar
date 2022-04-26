@@ -25,6 +25,19 @@ fun fetchImage(view: ImageView, src: String?) {
     }
 }
 
+/** Convert a list of Strings to a single comma separated string */
+@BindingAdapter("displayList")
+fun TextView.listToString(list: List<String>?) {
+    var listString = ""
+
+    list?.let {
+        listString = list.joinToString {
+            it
+        }
+    }
+    text = listString
+}
+
 @BindingAdapter("releaseDate")
 fun TextView.displayReleaseDate(game: DatabaseGame) {
 

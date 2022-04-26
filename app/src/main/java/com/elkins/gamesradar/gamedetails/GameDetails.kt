@@ -14,7 +14,9 @@ data class GameDetails(
     val expectedReleaseQuarter: Int,
     val expectedReleaseMonth: Int,
     val expectedReleaseDay: Int,
-    val description: String? = "N/A",
+    val deck: String?,
+    val description: String? = "No description provided",
     val genres: List<String>? = listOf("N/A"),
+    val developers: List<String>? = listOf("N/A"),
     val publishers: List<String>? = listOf("N/A")
 )

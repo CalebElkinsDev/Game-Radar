@@ -11,6 +11,18 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
         <!-- Customize your theme here. -->
+
+        <!-- Set custom attributes -->
+        <item name="headerColor">@color/headerColorDay</item>
+
+    </style>
+
+    <!-- Text appearance for headers in details page -->
+    <style name="DetailsHeader" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?attr/headerColor</item>
+        <item name="android:textSize">@dimen/text_size_details_header</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>
