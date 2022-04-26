@@ -46,32 +46,24 @@ class GameDetailsFragment : Fragment() {
 
         return binding.root
     }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        // Set details in binding layout after the view model has fetched the details from the API
-//        viewModel.gameDetails.observe(viewLifecycleOwner) {
-//            if(it != null) {
-//                initializePlatforms()
-//            }
-//        }
-//    }
-//
-//    /** Populate the platforms. Used after the game details are fetched */
-//    private fun initializePlatforms() {
-//        /* Add a custom text view to the platforms group for each platform of the game*/
-//
-//        for(platform in viewModel.gameDetails.value!!.platforms!!) {
-//            val view = LayoutInflater.from(binding.root.context).inflate(
-//                R.layout.platform_item,
-//                binding.platformsGroup,
-//                false
-//            ) as TextView
-//
-//            view.text = platform
-//            binding.platformsGroup.addView(view)
-//        }
-//        binding.executePendingBindings()
-//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set details in binding layout after the view model has fetched the details from the API
+        viewModel.gameDetails.observe(viewLifecycleOwner) {
+            if(it != null) {
+                finishLoading()
+            }
+        }
+    }
+
+    /**
+     * Called when view model successfully retrieves the games details to hide the progress
+     * bar and display the details
+     */
+    private fun finishLoading() {
+        binding.loadingProgressBar.visibility = View.INVISIBLE
+        binding.detailsScrollView.visibility = View.VISIBLE
+    }
 }
