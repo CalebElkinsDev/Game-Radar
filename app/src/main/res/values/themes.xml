@@ -20,9 +20,16 @@
     </style>
 
     <!-- Text appearance for headers in details page -->
-    <style name="DetailsHeader" parent="@android:style/TextAppearance">
+    <style name="SubHeader" parent="@android:style/TextAppearance">
         <item name="android:textColor">?attr/headerColor</item>
-        <item name="android:textSize">@dimen/text_size_details_header</item>
+        <item name="android:textSize">@dimen/text_subheader</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Text appearance for large headers -->
+    <style name="Header" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?attr/headerColor</item>
+        <item name="android:textSize">@dimen/text_header</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>

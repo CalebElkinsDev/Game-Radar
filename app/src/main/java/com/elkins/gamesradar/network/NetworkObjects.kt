@@ -105,7 +105,7 @@ fun NetworkGameDetail.asDomainModel(): GameDetails {
         id = id,
         guid = guid,
         name = name,
-        platforms = platforms?.map { it.abbreviation },
+        platforms = platforms?.map { it.name },
         imageUrl = image!!.originalUrl,
         images = images?.map { it.originalUrl },
         originalReleaseDate = networkDateStringToDate(originalReleaseDate).timeInMillis(),
