@@ -2,9 +2,15 @@
     <string name="app_name">Games Radar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Games list Strings -->
+    <string name="list_appbar_title">Games Radar</string>
+
+    <!-- Details Page Strings -->
     <string name="details_header_genres">Genres</string>
     <string name="details_header_publishers">Publishers</string>
     <string name="details_header_developers">Developers</string>
     <string name="details_header_platforms">Platforms</string>
     <string name="details_header_release_date">Released</string>
+    <string name="details_title_placeholder">Loading Details</string>
 </resources>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="headerColor" format="color"/>
+    <attr name="bodyTextColor" format="color"/>
+    <attr name="activity_bg_color" format="color"/>
 </resources>

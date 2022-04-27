@@ -14,6 +14,7 @@ import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.databinding.FragmentGameDetailsBinding
 import com.elkins.gamesradar.gameslist.GamesListViewModel
 import com.elkins.gamesradar.gameslist.GamesListViewModelFactory
+import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
 class GameDetailsFragment : Fragment() {
@@ -47,6 +48,9 @@ class GameDetailsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        // Set a placeholder for the app bar title until game details are fetched
+        setSupportBarTitle(requireActivity(), getString(R.string.details_title_placeholder))
+
         return binding.root
     }
 
@@ -56,6 +60,7 @@ class GameDetailsFragment : Fragment() {
         // Set details in binding layout after the view model has fetched the details from the API
         viewModel.gameDetails.observe(viewLifecycleOwner) {
             if(it != null) {
+                setSupportBarTitle(requireActivity(), it.name) // Update app bar title
                 finishLoading()
             }
         }

@@ -17,6 +17,7 @@ import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
+import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
 /**
@@ -70,6 +71,9 @@ class GamesListFragment : Fragment() {
                 viewModel.navigateToDetailsPageHandled() // Event nulling value before navigation completes
             }
         }
+
+        // Set the title for the appbar
+        setSupportBarTitle(requireActivity(), getString(R.string.list_appbar_title))
 
         return binding.root
     }

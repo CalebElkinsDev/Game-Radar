@@ -5,9 +5,17 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="navy_med">#283593</color>
+    <color name="navy_dark">#001064</color>
+
     <color name="headerColorDay">#3a3a3a</color>
     <color name="headerColorNight">#e2e2e2</color>
+
+    <color name="bodyTextColorDay">#505050</color>
+
+    <color name="activity_bg_color_day">#ededed</color>
 </resources>
