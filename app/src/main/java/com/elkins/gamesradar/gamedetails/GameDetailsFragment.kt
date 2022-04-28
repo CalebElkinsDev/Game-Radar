@@ -1,26 +1,27 @@
 package com.elkins.gamesradar.gamedetails
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.elkins.gamesradar.R
-import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.databinding.FragmentGameDetailsBinding
-import com.elkins.gamesradar.gameslist.GamesListViewModel
-import com.elkins.gamesradar.gameslist.GamesListViewModelFactory
 import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
 class GameDetailsFragment : Fragment() {
 
+    private val galleryColumns = 3
+
     private lateinit var binding: FragmentGameDetailsBinding
     private lateinit var viewModel: GameDetailsViewModel
+    private lateinit var adapter: DetailsGalleryRecyclerViewAdapter
     private lateinit var guid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,8 @@ class GameDetailsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        initializeRecyclerView()
+
         // Set a placeholder for the app bar title until game details are fetched
         setSupportBarTitle(requireActivity(), getString(R.string.details_title_placeholder))
 
@@ -61,9 +64,34 @@ class GameDetailsFragment : Fragment() {
         viewModel.gameDetails.observe(viewLifecycleOwner) {
             if(it != null) {
                 setSupportBarTitle(requireActivity(), it.name) // Update app bar title
+                adapter.submitList(getGalleryContents()) // Submit photos/videos to recycler view
                 finishLoading()
             }
         }
+    }
+
+    /** Helper function for setting up the recycler view that holds teh gallery items */
+    private fun initializeRecyclerView() {
+        adapter = DetailsGalleryRecyclerViewAdapter(ClickListener {
+            //viewModel.startNavigateToDetailsPage(it.guid)
+            Log.d("Gallery", "Item clicked")
+        })
+        binding.galleryRecyclerView.adapter = adapter
+        binding.galleryRecyclerView.layoutManager = GridLayoutManager(context, galleryColumns)
+    }
+
+    /**
+     * Get a list of [GalleryItem] from the urls in the "images" value of the current
+     * [GameDetails] object.
+     */
+    private fun getGalleryContents(): List<GalleryItem> {
+        var galleryItems: MutableList<GalleryItem>
+        viewModel.gameDetails.value.let {
+            galleryItems = it?.images?.map { imageUrl ->
+                GalleryItem(imageUrl)
+            } as MutableList<GalleryItem>
+        }
+        return galleryItems
     }
 
     /** Clear the [GameDetailsViewModel] current game details when leaving the detail fragment */
