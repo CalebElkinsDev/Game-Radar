@@ -3,9 +3,7 @@ package com.elkins.gamesradar.gameslist
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -72,10 +70,30 @@ class GamesListFragment : Fragment() {
             }
         }
 
+        // Enable the app bar menu
+        setHasOptionsMenu(true)
+
         // Set the title for the appbar
         setSupportBarTitle(requireActivity(), getString(R.string.list_appbar_title))
 
         return binding.root
+    }
+
+    /** Inflate and add the games list menu */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.games_list_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    /** Handle user menu selections*/
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.settingsMenuButton -> {
+                navigateToSettings()
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     /** Helper function for setting up the recycler view that holds game items */
@@ -85,6 +103,12 @@ class GamesListFragment : Fragment() {
         })
         binding.list.adapter = adapter
         binding.list.layoutManager = GridLayoutManager(context, columnCount)
+    }
+
+    /** Called by the menu icon to open the settings fragment */
+    private fun navigateToSettings() {
+        findNavController().navigate(GamesListFragmentDirections
+            .actionGamesListFragmentToSettingsFragment())
     }
 
     private fun updateFilterTest(releaseWindow: GamesRepository.ReleaseWindow) {

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_gamesListFragment_to_gameDetailsFragment"
             app:destination="@id/gameDetailsFragment" />
+        <action
+            android:id="@+id/action_gamesListFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameDetailsFragment"
@@ -23,4 +26,8 @@
             android:name="guid"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.elkins.gamesradar.gamesoptions.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
