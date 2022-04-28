@@ -1,12 +1,69 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+    <!-- Release date preference -->
+    <string-array name="list_date_entries">
+        <item>New &amp; Upcoming</item>
+        <item>Past Month</item>
+        <item>Past Year</item>
     </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
+    <string-array name="list_date_values">
+        <item>upcoming</item>
+        <item>past_month</item>
+        <item>past_year</item>
+    </string-array>
+
+    <!-- Platforms -->
+    <string-array name="list_platforms_full_entries">
+        <item>Nintendo Switch</item>
+        <item>PC</item>
+        <item>PS4</item>
+        <item>PS5</item>
+        <item>Xbox One</item>
+        <item>Xbox Series X</item>
+    </string-array>
+
+    <!-- TODO get values from API-->
+    <string-array name="list_platforms_full_values">
+        <item>nsw</item>
+        <item>pc</item>
+        <item>ps4</item>
+        <item>ps5</item>
+        <item>xbox1</item>
+        <item>xboxsx</item>
+    </string-array>
+    
+    <!-- Genres -->
+    <string-array name="list_genres_entries">
+        <item>Genre 1</item>
+        <item>Genre 2</item>
+        <item>Genre 3</item>
+        <item>Genre 4</item>
+        <item>Genre 5</item>
+        <item>Genre 6</item>
+        <item>Genre 7</item>
+        <item>Genre 8</item>
+        <item>Genre 9</item>
+        <item>Genre 10</item>
+        <item>Genre 11</item>
+        <item>Genre 12</item>
+        <item>Genre 13</item>
+        <item>Genre 14</item>
+    </string-array>
+
+    <string-array name="list_genres_values">
+        <item>genre_1</item>
+        <item>genre_2</item>
+        <item>genre_3</item>
+        <item>genre_4</item>
+        <item>genre_5</item>
+        <item>genre_6</item>
+        <item>genre_7</item>
+        <item>genre_8</item>
+        <item>genre_9</item>
+        <item>genre_10</item>
+        <item>genre_11</item>
+        <item>genre_12</item>
+        <item>genre_13</item>
+        <item>genre_14</item>
     </string-array>
 </resources>

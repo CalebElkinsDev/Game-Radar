@@ -9,6 +9,7 @@ import com.elkins.gamesradar.gamedetails.GameDetails
 import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.lang.Exception
 
 class GamesListViewModel(application: Application) : ViewModel() {

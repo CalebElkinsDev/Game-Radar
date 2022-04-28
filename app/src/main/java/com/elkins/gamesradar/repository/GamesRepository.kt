@@ -120,6 +120,6 @@ class GamesRepository(private val database: GamesDatabase) {
         calendar.add(Calendar.YEAR, Calendar.YEAR+10)
         val endingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
-        return NetworkObjectConstants.ORIGINAL_RELEASE_DATE + "${startingReleaseDate}|${endingReleaseDate}"
+        return NetworkObjectConstants.ORIGINAL_RELEASE_DATE + ":${startingReleaseDate}|${endingReleaseDate}"
     }
 }
