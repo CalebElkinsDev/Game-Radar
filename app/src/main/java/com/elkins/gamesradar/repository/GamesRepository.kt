@@ -8,7 +8,6 @@ import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
 import com.elkins.gamesradar.gamedetails.GameDetails
 import com.elkins.gamesradar.network.GiantBombApi
-import com.elkins.gamesradar.network.NetworkGameDetail
 import com.elkins.gamesradar.network.asDatabaseModel
 import com.elkins.gamesradar.network.asDomainModel
 import com.elkins.gamesradar.utility.DatabaseConstants
@@ -31,9 +30,9 @@ class GamesRepository(private val database: GamesDatabase) {
     // TODO save and load filter from prefs
     var databaseFilter: MutableLiveData<DatabaseFilter> = MutableLiveData(DatabaseFilter(
         getDatabaseFilterStartDate(currentReleaseWindow),
-        getDatabaseFilterEndDate(currentReleaseWindow)
+        getDatabaseFilterEndDate(currentReleaseWindow),
+        listOf("NSW") //TODO
     ))
-
 
     suspend fun getGamesFromNetwork() {
 
@@ -92,18 +91,21 @@ class GamesRepository(private val database: GamesDatabase) {
         return database.gamesDao.getGames(query)
     }
 
-    /** Construct a SQL query based on the [DatabaseFilter] to retrieve filtered results from the
-     * database. */
+    /**
+     * Construct a SQL query based on the user preferences to retrieve filtered results from the
+     * database.
+     */
     private fun buildGamesListQuery(filter: DatabaseFilter): SimpleSQLiteQuery {
         val querySelect = "SELECT * FROM ${DatabaseConstants.GAMES_TABLE_NAME} "
 
-        val queryWhere = "WHERE ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} > ${filter.startDate} " +
+        val queryReleaseDates = "WHERE ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} > ${filter.startDate} " +
                 "AND ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} < ${filter.endDate} "
+
         val queryPlatforms = filterPlatforms()
 
         val queryOrder = "ORDER BY ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} ${filter.sortOrder}"
 
-        return SimpleSQLiteQuery(querySelect + queryWhere + queryPlatforms + queryOrder)
+        return SimpleSQLiteQuery(querySelect + queryReleaseDates + queryPlatforms + queryOrder)
     }
 
     /** Return the filter field for original_release_date */
@@ -127,16 +129,17 @@ class GamesRepository(private val database: GamesDatabase) {
     /** Format SQL filter for currently selected platforms */
     private fun filterPlatforms(): String {
 
-        val platforms = getSelectedPlatformsFromPrefs()
+        // Get the selected platforms from the current filter
+        val platforms = databaseFilter.value?.platforms?: emptyList()
 
-        // Create a LIKE statement for each platform selected
-        return platforms.joinToString(prefix = "AND (", postfix = ")", separator = " OR ") {
-            "platforms LIKE '%${it}%'"
+        return if (!platforms.isNullOrEmpty()) {
+            // Create a LIKE statement for each platform selected
+            platforms.joinToString(prefix = "AND (", postfix = ")", separator = " OR ") {
+                "platforms LIKE '%${it}%'"
+            }
+        } else {
+            // Return nothing in order to retrieve all games if filter is null or empty
+            ""
         }
-    }
-
-    /** Get the currently selected platforms from the shared preferences */
-    private fun getSelectedPlatformsFromPrefs(): List<String> {
-        return listOf("PC", "NSW")
     }
 }

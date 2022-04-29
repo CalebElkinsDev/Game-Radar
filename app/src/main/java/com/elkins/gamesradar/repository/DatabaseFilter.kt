@@ -9,10 +9,10 @@ import java.util.*
  * Class for determining what games to display in the games list. As changes to its fields are
  * made, the LiveData holding the current game's list will be transformed to reflect changes.
  */
-class DatabaseFilter(@Bindable var startDate: String,
-                     @Bindable var endDate: String,
-                     @Bindable var sortOrder: String = "ASC") : BaseObservable() {
-}
+class DatabaseFilter(var startDate: String,
+                     var endDate: String,
+                     var platforms: List<String>,
+                     var sortOrder: String = "ASC")
 
 /**
  * Get the string value of the starting time for filtering games
@@ -68,3 +68,7 @@ fun getDatabaseFilterEndDate(releaseWindow: GamesRepository.ReleaseWindow): Stri
 
     return endingReleaseDate.toString()
 }
+
+/**
+ *
+ */

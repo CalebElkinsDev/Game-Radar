@@ -1,21 +1,47 @@
 package com.elkins.gamesradar.gamesoptions
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.gameslist.GamesListViewModel
+import com.elkins.gamesradar.gameslist.GamesListViewModelFactory
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private val viewModel: GamesListViewModel by viewModels()
+    private lateinit var viewModel: GamesListViewModel// by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-        setPlatformsSummary()
+        // Initialize ViewModel
+        val viewModelFactory = GamesListViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(GamesListViewModel::class.java)
+
+        //setPlatformsSummary()
+
+        val pref = findPreference<MultiSelectListPreference>("platforms")
+        pref?.setOnPreferenceChangeListener { preference, newValue ->
+
+            var newList = mutableListOf<String>()
+
+            for(item in (newValue as HashSet<String>)) {
+                newList.add(item)
+            }
+            Log.d("Filter", newList.toString())
+            viewModel.updateFilterPlatforms(newList)
+            true
+        }
+
+        // TODO create listener for changes, update view model's DatabaseFilter on changes
+//        viewModel.updateFilterPlatforms(listOf("MAC"))
     }
+
+
 
     /** Update the summary for the platforms section */
     private fun setPlatformsSummary() {

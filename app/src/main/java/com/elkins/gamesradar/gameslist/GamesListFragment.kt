@@ -112,11 +112,8 @@ class GamesListFragment : Fragment() {
     }
 
     private fun updateFilterTest(releaseWindow: GamesRepository.ReleaseWindow) {
-        val databaseFilter = DatabaseFilter(
-            getDatabaseFilterStartDate(releaseWindow),
-            getDatabaseFilterEndDate(releaseWindow)
-        )
-        viewModel.updateFilter(databaseFilter)
+
+        viewModel.updateFilterReleaseDates(releaseWindow)
 
         object : CountDownTimer(100, 100) {
             override fun onTick(millisUntilFinished: Long) { }
