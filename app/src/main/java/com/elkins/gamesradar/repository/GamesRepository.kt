@@ -99,10 +99,11 @@ class GamesRepository(private val database: GamesDatabase) {
 
         val queryWhere = "WHERE ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} > ${filter.startDate} " +
                 "AND ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} < ${filter.endDate} "
+        val queryPlatforms = filterPlatforms()
 
         val queryOrder = "ORDER BY ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} ${filter.sortOrder}"
 
-        return SimpleSQLiteQuery(querySelect + queryWhere + queryOrder)
+        return SimpleSQLiteQuery(querySelect + queryWhere + queryPlatforms + queryOrder)
     }
 
     /** Return the filter field for original_release_date */
@@ -121,5 +122,21 @@ class GamesRepository(private val database: GamesDatabase) {
         val endingReleaseDate = originalReleaseDateFormat.format(calendar.time)
 
         return NetworkObjectConstants.ORIGINAL_RELEASE_DATE + ":${startingReleaseDate}|${endingReleaseDate}"
+    }
+
+    /** Format SQL filter for currently selected platforms */
+    private fun filterPlatforms(): String {
+
+        val platforms = getSelectedPlatformsFromPrefs()
+
+        // Create a LIKE statement for each platform selected
+        return platforms.joinToString(prefix = "AND (", postfix = ")", separator = " OR ") {
+            "platforms LIKE '%${it}%'"
+        }
+    }
+
+    /** Get the currently selected platforms from the shared preferences */
+    private fun getSelectedPlatformsFromPrefs(): List<String> {
+        return listOf("PC", "NSW")
     }
 }

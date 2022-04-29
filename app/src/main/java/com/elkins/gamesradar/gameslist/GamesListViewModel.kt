@@ -57,9 +57,7 @@ class GamesListViewModel(application: Application) : ViewModel() {
     }
 
     fun navigateToDetailsPageHandled() {
-
         _gameToNavigateTo.value = null
-        Log.d("Navigation", "NavigateToDetailsPageHandled called, value = ${_gameToNavigateTo.value}")
     }
 }
 
