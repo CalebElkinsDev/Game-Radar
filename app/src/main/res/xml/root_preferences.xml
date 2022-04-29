@@ -6,7 +6,7 @@
             app:defaultValue="upcoming"
             app:entries="@array/list_date_entries"
             app:entryValues="@array/list_date_values"
-            app:key="releaseDates"
+            app:key="releaseWindow"
             app:title="@string/settings_release_dates"
             app:useSimpleSummaryProvider="true" />
 

@@ -16,10 +16,11 @@ import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
 import com.elkins.gamesradar.utility.setSupportBarTitle
+import kotlin.math.min
 
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of games from the repository based on filters from preferences.
  */
 class GamesListFragment : Fragment() {
 
@@ -27,15 +28,7 @@ class GamesListFragment : Fragment() {
     private lateinit var viewModel: GamesListViewModel
     private lateinit var adapter: GamesListRecyclerViewAdapter
 
-    private var columnCount = 2
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
+    private val columnCount = 2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,21 +45,27 @@ class GamesListFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(GamesListViewModel::class.java)
 
         viewModel.games.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+            adapter.submitList(it) // Update the recycler view when the data changes
 
-        // Setup buttons for modifying filter: TODO remove after testing
-        binding.upcomingGames.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.UPCOMING) }
-        binding.pastMonth.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_MONTH) }
-        binding.pastYear.setOnClickListener { updateFilterTest(GamesRepository.ReleaseWindow.PAST_YEAR) }
+            // Jump to near the beginning of the list and then smooth scroll to start on changes
+            // TODO Trigger this only when filters change, not when a game is favorited
+            object : CountDownTimer(100, 100) {
+                override fun onTick(millisUntilFinished: Long) { }
+
+                override fun onFinish() {
+                    binding.list.scrollToPosition(min(8, it.size))
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }.start()
+        }
 
         viewModel.gameToNavigateTo.observe(viewLifecycleOwner) {
             if(!it.isNullOrEmpty()) {
-                Log.d("Navigation", "GUID going to = ${it}")
+                Log.d("Navigation", "GUID going to = $it")
                 findNavController().navigate(
-                    GamesListFragmentDirections.actionGamesListFragmentToGameDetailsFragment(it!!)
+                    GamesListFragmentDirections.actionGamesListFragmentToGameDetailsFragment(it)
                 )
-                viewModel.navigateToDetailsPageHandled() // Event nulling value before navigation completes
+                viewModel.navigateToDetailsPageHandled() // Clear the live data event after handled
             }
         }
 
@@ -109,34 +108,5 @@ class GamesListFragment : Fragment() {
     private fun navigateToSettings() {
         findNavController().navigate(GamesListFragmentDirections
             .actionGamesListFragmentToSettingsFragment())
-    }
-
-    private fun updateFilterTest(releaseWindow: GamesRepository.ReleaseWindow) {
-
-        viewModel.updateFilterReleaseDates(releaseWindow)
-
-        object : CountDownTimer(100, 100) {
-            override fun onTick(millisUntilFinished: Long) { }
-
-            override fun onFinish() {
-                binding.list.scrollToPosition(8)
-                binding.list.smoothScrollToPosition(0)
-            }
-        }.start()
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            GamesListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

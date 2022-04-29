@@ -16,6 +16,13 @@ class DatabaseConstants {
     }
 }
 
+class PreferenceConstants {
+    companion object {
+        const val PREF_PLATFORMS = "platforms"
+        const val PREF_RELEASE_WINDOW = "releaseWindow"
+    }
+}
+
 /** Data class for getting relevant platforms and their preferred order */
 data class Platform(private val name: String, private val abbreviation: String)
 

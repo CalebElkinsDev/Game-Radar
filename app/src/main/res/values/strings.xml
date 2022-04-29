@@ -21,8 +21,8 @@
     <string name="settings_release_dates">Release Dates</string>
     <string name="settings_platforms">Platforms</string>
     <string name="settings_genres">Genres</string>
-    <string name="settings_platforms_all_selected">All</string>
-    <string name="settings_platforms_none_selected">None</string>
+    <string name="settings_all_selected">All</string>
+    <string name="settings_none_selected">None</string>
     <string name="settings_genres_all_selected">All</string>
     <string name="settings_genres_none_selected">None</string>
 
