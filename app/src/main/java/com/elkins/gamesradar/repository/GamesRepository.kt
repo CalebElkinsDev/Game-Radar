@@ -1,39 +1,42 @@
 package com.elkins.gamesradar.repository
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
+import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.gamedetails.GameDetails
 import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.network.asDatabaseModel
 import com.elkins.gamesradar.network.asDomainModel
 import com.elkins.gamesradar.utility.DatabaseConstants
 import com.elkins.gamesradar.utility.NetworkObjectConstants
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORMS
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
 import com.elkins.gamesradar.utility.originalReleaseDateFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class GamesRepository(private val database: GamesDatabase) {
-
-    private val apikey = "66e90279e18122006ea7d509821c519bb14bfe1d"
+class GamesRepository(private val application: Application) {
 
     enum class ReleaseWindow {
         UPCOMING, PAST_MONTH, PAST_YEAR
     }
 
-    private val currentReleaseWindow: ReleaseWindow = ReleaseWindow.UPCOMING
+    private val database: GamesDatabase = getDatabase(application)
+    private val apikey = "66e90279e18122006ea7d509821c519bb14bfe1d" // TODO REMOVE
 
-    // TODO save and load filter from prefs
-    var databaseFilter: MutableLiveData<DatabaseFilter> = MutableLiveData(DatabaseFilter(
-        getDatabaseFilterStartDate(currentReleaseWindow),
-        getDatabaseFilterEndDate(currentReleaseWindow),
-        listOf("NSW") //TODO
-    ))
+    /** The LiveData that is observed for getting filtered results from the database*/
+    var databaseFilter: MutableLiveData<DatabaseFilter> = initializeDatabaseFilterFromPrefs()
 
+
+    /** WIP: Will be used to get all games within the collective timeframes the app utilizies */
     suspend fun getGamesFromNetwork() {
 
         withContext(Dispatchers.IO) {
@@ -78,6 +81,7 @@ class GamesRepository(private val database: GamesDatabase) {
         }
     }
 
+    /** Return a [GameDetails] object from the API based on the guid passed to the call. */
     suspend fun fetchGameById(guid: String): GameDetails {
         return GiantBombApi.retrofitService.getGameById(guid = guid, apikey = apikey)
             .body()!!.results.asDomainModel()
@@ -85,10 +89,40 @@ class GamesRepository(private val database: GamesDatabase) {
 
     /** Get all games in the database that meet the criteria of the [DatabaseFilter] */
     fun getGames(filter: DatabaseFilter): LiveData<List<DatabaseGame>> {
-
         val query = buildGamesListQuery(filter)
-
         return database.gamesDao.getGames(query)
+    }
+
+    /**
+     * Create a [DatabaseFilter] from the default shared preferences and return it wrapped as
+     * MutableLiveData.
+     */
+    private fun initializeDatabaseFilterFromPrefs(): MutableLiveData<DatabaseFilter> {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
+
+        // Get the enum value of the saved release window and then the date strings from that
+        val releaseWindowString = sharedPreferences.getString(PREF_RELEASE_WINDOW, "UPCOMING")?.uppercase()
+        val releaseWindow = ReleaseWindow.valueOf(releaseWindowString?: "UPCOMING")
+        val startDate = getDatabaseFilterStartDate(releaseWindow)
+        val endDate = getDatabaseFilterEndDate(releaseWindow)
+
+        // Map the Set of platform strings into a List
+        val platformsSet = sharedPreferences.getStringSet(PREF_PLATFORMS, emptySet())
+        val platforms: List<String> = platformsSet!!.map { it }
+
+        // Convert the Boolean preference into the corresponding SQL statement
+        val sortOrder = sharedPreferences.getBoolean(PREF_SORT_ORDER, true)
+        val sortString = if(sortOrder) "asc" else "desc"
+
+        // Create a DatabaseFilter from the acquired preferences
+        val filter = DatabaseFilter(
+            startDate = startDate,
+            endDate = endDate,
+            platforms = platforms,
+            sortOrder = sortString
+        )
+
+        return MutableLiveData(filter)
     }
 
     /**

@@ -5,14 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
 
 
 class GameDetailsViewModel(application: Application): ViewModel() {
 
-    private val gamesRepository = GamesRepository(getDatabase(application))
+    private val gamesRepository = GamesRepository(application)
 
     var gameDetails = MutableLiveData<GameDetails?>()
 

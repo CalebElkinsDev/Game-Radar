@@ -9,8 +9,8 @@ import java.util.*
  */
 class DatabaseFilter(var startDate: String,
                      var endDate: String,
-                     var platforms: List<String>,
-                     var sortOrder: String = "ASC")
+                     var platforms: List<String>?,
+                     var sortOrder: String? = "ASC")
 
 /**
  * Get the string value of the starting time for filtering games

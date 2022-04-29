@@ -2,13 +2,12 @@ package com.elkins.gamesradar.gameslist
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
 class GamesListViewModel(application: Application) : ViewModel() {
 
-    private val gamesRepository = GamesRepository(getDatabase(application))
+    private val gamesRepository = GamesRepository(application)
 
     val games = Transformations.switchMap(gamesRepository.databaseFilter) {
         gamesRepository.getGames(it)
