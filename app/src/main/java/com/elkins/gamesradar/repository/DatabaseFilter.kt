@@ -68,7 +68,3 @@ fun getDatabaseFilterEndDate(releaseWindow: GamesRepository.ReleaseWindow): Stri
 
     return endingReleaseDate.toString()
 }
-
-/**
- *
- */

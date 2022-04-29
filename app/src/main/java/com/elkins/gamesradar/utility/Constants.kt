@@ -20,6 +20,7 @@ class PreferenceConstants {
     companion object {
         const val PREF_PLATFORMS = "platforms"
         const val PREF_RELEASE_WINDOW = "releaseWindow"
+        const val PREF_SORT_ORDER = "sortOrder"
     }
 }
 

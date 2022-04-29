@@ -18,7 +18,6 @@ class GameDetailsViewModel(application: Application): ViewModel() {
 
     /** Download the game details and store in the [gameDetails] LiveData*/
     fun fetchGameDetails(guid: String) {
-        // Download the details of the current game
         viewModelScope.launch {
             gameDetails.value = gamesRepository.fetchGameById(guid)
         }

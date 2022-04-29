@@ -25,6 +25,9 @@
     <string name="settings_none_selected">None</string>
     <string name="settings_genres_all_selected">All</string>
     <string name="settings_genres_none_selected">None</string>
+    <string name="settings_sort_order">Sort Order</string>
+    <string name="settings_sort_order_asc">Oldest to newest</string>
+    <string name="settings_sort_order_desc">Newest to oldest</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

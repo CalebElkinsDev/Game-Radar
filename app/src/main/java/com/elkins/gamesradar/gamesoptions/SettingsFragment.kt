@@ -2,16 +2,19 @@ package com.elkins.gamesradar.gamesoptions
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.gameslist.GamesListViewModel
 import com.elkins.gamesradar.gameslist.GamesListViewModelFactory
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORMS
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -48,6 +51,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             // Update the preferences summary
             setPlatformsSummary(newList)
+
+            true
+        }
+
+        val sortOrderPref = findPreference<SwitchPreferenceCompat>(PREF_SORT_ORDER)
+        sortOrderPref?.setOnPreferenceChangeListener { preference, newValue ->
+
+            viewModel.updateFilterSortOrder(newValue as Boolean)
+            Log.d("Switch", newValue.toString())
 
             true
         }

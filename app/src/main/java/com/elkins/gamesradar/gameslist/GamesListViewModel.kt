@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.gamedetails.GameDetails
+import com.elkins.gamesradar.network.GiantBombApi
 import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
@@ -51,6 +52,14 @@ class GamesListViewModel(application: Application) : ViewModel() {
         gamesRepository.databaseFilter.value = gamesRepository.databaseFilter.value.also {
             it?.startDate = getDatabaseFilterStartDate(releaseWindow)
             it?.endDate = getDatabaseFilterEndDate(releaseWindow)
+        }
+    }
+
+    /** Update the sort order of the database filter */
+    fun updateFilterSortOrder(newOrder: Boolean) {
+        val orderString = if(newOrder) "asc" else "desc"
+        gamesRepository.databaseFilter.value = gamesRepository.databaseFilter.value.also {
+            it?.sortOrder = orderString
         }
     }
 
