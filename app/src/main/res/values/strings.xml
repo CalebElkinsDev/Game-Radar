@@ -28,6 +28,9 @@
     <string name="settings_sort_order">Sort Order</string>
     <string name="settings_sort_order_asc">Oldest to newest</string>
     <string name="settings_sort_order_desc">Newest to oldest</string>
+    <string name="settings_cache_title">Clear Cache</string>
+    <string name="settings_cache_size">Current Size: %1$s</string>
+    <string name="settings_cache_summary_on">Clearing…</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

@@ -2,7 +2,9 @@ package com.elkins.gamesradar.gamesoptions
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
@@ -12,9 +14,16 @@ import com.elkins.gamesradar.R
 import com.elkins.gamesradar.gameslist.GamesListViewModel
 import com.elkins.gamesradar.gameslist.GamesListViewModelFactory
 import com.elkins.gamesradar.repository.GamesRepository
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.CACHE_CLEAR_TIMER
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_CLEAR_CACHE
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORMS
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
+import com.elkins.gamesradar.utility.getAppCacheSize
+import java.io.File
+import java.text.DecimalFormat
+import kotlin.math.min
+
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -54,6 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             true
         }
+        setPlatformsSummary()
 
         val sortOrderPref = findPreference<SwitchPreferenceCompat>(PREF_SORT_ORDER)
         sortOrderPref?.setOnPreferenceChangeListener { preference, newValue ->
@@ -64,7 +74,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        setPlatformsSummary()
+        val clearCachePref = findPreference<SwitchPreferenceCompat>(PREF_CLEAR_CACHE)
+        clearCachePref?.let {
+            setCacheSummaryOff(it)
+            it.setOnPreferenceChangeListener { preference, newValue ->
+                requireActivity().cacheDir.deleteRecursively()
+                resetToggle(clearCachePref)
+                true
+            }
+        }
     }
 
 
@@ -96,6 +114,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         pref?.summaryFromList(platformNames?: emptyList(), resources)
+    }
+
+    /**
+     * Brief countdown timer to automatically reset the clear cache toggle since it should never
+     * stay on but instead be used to trigger the cache clearing function.
+     */
+    private fun resetToggle(pref: SwitchPreferenceCompat) {
+        object : CountDownTimer(CACHE_CLEAR_TIMER, 100) {
+            override fun onTick(millisUntilFinished: Long) { }
+
+            override fun onFinish() {
+                pref.isChecked = false
+                setCacheSummaryOff(pref)
+            }
+        }.start()
+    }
+
+    /** Sets the off summary with the app's current cache size */
+    private fun setCacheSummaryOff(pref: SwitchPreferenceCompat) {
+        pref.summaryOff =  getString(R.string.settings_cache_size,
+            requireActivity().getAppCacheSize())
     }
 }
 

@@ -21,6 +21,8 @@ class PreferenceConstants {
         const val PREF_PLATFORMS = "platforms"
         const val PREF_RELEASE_WINDOW = "releaseWindow"
         const val PREF_SORT_ORDER = "sortOrder"
+        const val PREF_CLEAR_CACHE = "clearCache"
+        const val CACHE_CLEAR_TIMER = 500L
     }
 }
 
