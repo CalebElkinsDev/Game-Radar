@@ -82,9 +82,21 @@ class GamesRepository(private val application: Application) {
     }
 
     /** Return a [GameDetails] object from the API based on the guid passed to the call. */
-    suspend fun fetchGameById(guid: String): GameDetails {
-        return GiantBombApi.retrofitService.getGameById(guid = guid, apikey = apikey)
-            .body()!!.results.asDomainModel()
+    suspend fun fetchGameById(guid: String): GameDetails? {
+        var details: GameDetails? = null
+        try {
+            val response = GiantBombApi.retrofitService.getGameById(guid = guid, apikey = apikey)
+
+            if(response.body() != null) {
+                details = response.body()!!.results.asDomainModel()
+            } else {
+                Log.d("Network Error", "Response body empty")
+            }
+        } catch (e: Exception) {
+            Log.e("Network Error", e.printStackTrace().toString())
+        }
+
+        return details
     }
 
     /** Get all games in the database that meet the criteria of the [DatabaseFilter] */

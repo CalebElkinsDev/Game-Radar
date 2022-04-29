@@ -1,10 +1,7 @@
 package com.elkins.gamesradar.gamedetails
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.elkins.gamesradar.repository.GamesRepository
 import kotlinx.coroutines.launch
 
@@ -15,10 +12,17 @@ class GameDetailsViewModel(application: Application): ViewModel() {
 
     var gameDetails = MutableLiveData<GameDetails?>()
 
+    private var _networkErrorEvent = MutableLiveData(false)
+    val networkErrorEvent: LiveData<Boolean>
+        get() = _networkErrorEvent
+
     /** Download the game details and store in the [gameDetails] LiveData*/
     fun fetchGameDetails(guid: String) {
         viewModelScope.launch {
             gameDetails.value = gamesRepository.fetchGameById(guid)
+            if(gameDetails.value == null) {
+                _networkErrorEvent.value = true
+            }
         }
     }
 
@@ -28,6 +32,11 @@ class GameDetailsViewModel(application: Application): ViewModel() {
      */
     fun clearGameDetails() {
         gameDetails.value = null
+    }
+
+    /** Called by obersvers when the [_networkErrorEvent] live data event is handled. */
+    fun handleNetworkErrorEvent() {
+        _networkErrorEvent.value = false
     }
 
 }

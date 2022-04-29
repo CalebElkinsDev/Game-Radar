@@ -21,6 +21,36 @@
             android:layout_width="72dp"
             android:layout_height="72dp" />
 
+        <LinearLayout
+            android:id="@+id/networkErrorGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details_network_error_title"
+                android:textAppearance="@style/Header" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details_network_error_body"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <Button
+                android:id="@+id/reloadNetworkRequestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/details_network_error_reload_btn"/>
+
+        </LinearLayout>
 
         <!-- Main content -->
         <androidx.core.widget.NestedScrollView

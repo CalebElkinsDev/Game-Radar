@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/drawable/ic_baseline_error_outline_24.xml" value="0.2035" />
+        <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/drawable/ic_image_placeholder_24.xml" value="0.2035" />
         <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/drawable/platform_background.xml" value="0.214" />
         <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/activity_main.xml" value="0.3278985507246377" />
         <entry key="..\:/Users/cmelk/Documents/Android/Personal Projects/GamesRadar/app/src/main/res/layout/fragment_game_details.xml" value="0.30489864864864863" />

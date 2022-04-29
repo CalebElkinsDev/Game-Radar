@@ -14,6 +14,10 @@
     <string name="details_content_desc_main_image">Main image</string>
     <string name="details_content_desc_gallery">Gallery Image</string>
 
+    <string name="details_network_error_title">No Internet Connection!</string>
+    <string name="details_network_error_body">Reconnect and try again</string>
+    <string name="details_network_error_reload_btn">Reload</string>
+
     <!-- Settings Strings -->
     <string name="settings_menu_name">Settings</string>
     <string name="settings_section_games_list">Games List</string>

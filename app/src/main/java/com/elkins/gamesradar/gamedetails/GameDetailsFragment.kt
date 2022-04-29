@@ -66,7 +66,22 @@ class GameDetailsFragment : Fragment() {
                 setSupportBarTitle(requireActivity(), it.name) // Update app bar title
                 adapter.submitList(getGalleryContents()) // Submit photos/videos to recycler view
                 finishLoading()
+            } else {
+                Log.d("DetailsFragment", "details are null")
             }
+        }
+
+        // Observe the viewModel's network error event
+        viewModel.networkErrorEvent.observe(viewLifecycleOwner) {
+            if(it) {
+                networkError()
+                viewModel.handleNetworkErrorEvent() // Clear the LiveData event
+            }
+        }
+
+        // Try again to load the game details after a network error
+        binding.reloadNetworkRequestButton.setOnClickListener {
+            reloadNetworkRequest()
         }
     }
 
@@ -107,5 +122,25 @@ class GameDetailsFragment : Fragment() {
     private fun finishLoading() {
         binding.loadingProgressBar.visibility = View.INVISIBLE
         binding.detailsScrollView.visibility = View.VISIBLE
+    }
+
+    /**
+     * Called by observer of view model's network error live data event. Stop the progress bar
+     * and show an error message to the user about the network error.
+     */
+    private fun networkError() {
+        binding.loadingProgressBar.visibility = View.INVISIBLE
+        binding.networkErrorGroup.visibility = View.VISIBLE
+    }
+
+    /**
+     * Called when the user presses the Reload button. Attempts to load the game details from the
+     * API again. Will fail if the user did not connect to the internet before trying again.
+     */
+    private fun reloadNetworkRequest() {
+        binding.loadingProgressBar.visibility = View.VISIBLE
+        binding.networkErrorGroup.visibility = View.INVISIBLE
+
+        viewModel.fetchGameDetails(guid)
     }
 }

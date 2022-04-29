@@ -5,6 +5,8 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.elkins.gamesradar.R
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.gamedetails.GameDetails
 import com.elkins.gamesradar.utility.NetworkObjectConstants.Companion.DATE_UNKNOWN
@@ -18,10 +20,9 @@ fun fetchImage(view: ImageView, src: String?) {
         val uri = src.toUri().buildUpon().scheme("https").build()
         Glide.with(view.context)
             .load(uri)
-//            .apply( // TODO Add placeholder and error images
-//                RequestOptions()
-//                .placeholder()
-//                .error())
+            .apply(RequestOptions()
+                .placeholder(R.drawable.ic_image_placeholder_24)
+                .error(R.drawable.ic_baseline_error_outline_24))
             .into(view)
     }
 }
