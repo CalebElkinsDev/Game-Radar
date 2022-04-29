@@ -1,20 +1,11 @@
 package com.elkins.gamesradar.gameslist
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.getDatabase
-import com.elkins.gamesradar.gamedetails.GameDetails
-import com.elkins.gamesradar.network.GiantBombApi
-import com.elkins.gamesradar.repository.DatabaseFilter
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
-import kotlinx.coroutines.launch
-import java.io.IOException
-import java.lang.Exception
-
 class GamesListViewModel(application: Application) : ViewModel() {
 
     private val gamesRepository = GamesRepository(getDatabase(application))

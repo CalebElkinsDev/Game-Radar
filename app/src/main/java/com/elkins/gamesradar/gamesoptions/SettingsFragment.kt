@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
@@ -20,9 +19,6 @@ import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORM
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
 import com.elkins.gamesradar.utility.getAppCacheSize
-import java.io.File
-import java.text.DecimalFormat
-import kotlin.math.min
 
 
 class SettingsFragment : PreferenceFragmentCompat() {

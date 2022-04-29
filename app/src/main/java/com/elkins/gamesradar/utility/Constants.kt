@@ -1,7 +1,5 @@
 package com.elkins.gamesradar.utility
 
-import com.elkins.gamesradar.network.NetworkPlatform
-
 
 class NetworkObjectConstants {
     companion object {

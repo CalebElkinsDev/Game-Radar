@@ -11,10 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
-import com.elkins.gamesradar.repository.DatabaseFilter
-import com.elkins.gamesradar.repository.GamesRepository
-import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
-import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
 import com.elkins.gamesradar.utility.setSupportBarTitle
 import kotlin.math.min
 

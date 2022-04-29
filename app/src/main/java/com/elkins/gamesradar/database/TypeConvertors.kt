@@ -2,7 +2,6 @@ package com.elkins.gamesradar.database
 
 import androidx.room.TypeConverter
 import java.lang.StringBuilder
-import java.util.*
 
 class TypeConvertors {
 
