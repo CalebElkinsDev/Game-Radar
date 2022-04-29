@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.gamedetails.GameDetails
+import com.elkins.gamesradar.utility.NetworkObjectConstants.Companion.DATE_UNKNOWN
 import java.util.*
 
 
@@ -70,7 +71,7 @@ fun TextView.displayReleaseDate(game: DatabaseGame) {
             text = release
 
         } else {
-            text = "TBA"
+            text = DATE_UNKNOWN
         }
     }
 }
@@ -110,7 +111,7 @@ fun TextView.displayReleaseDate(game: GameDetails?) {
             text = release
 
         } else {
-            text = "TBA"
+            text = DATE_UNKNOWN
         }
     }
 }

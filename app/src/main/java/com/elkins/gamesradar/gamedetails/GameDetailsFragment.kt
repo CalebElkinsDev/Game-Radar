@@ -43,7 +43,7 @@ class GameDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_details, container, false)
         binding.lifecycleOwner = viewLifecycleOwner

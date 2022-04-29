@@ -6,7 +6,7 @@
         android:id="@+id/settingsMenuButton"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Settings"
+        android:title="@string/settings_menu_name"
         android:visible="true"
         app:showAsAction="always" />
 </menu>

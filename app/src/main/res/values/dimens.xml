@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_margin">16dp</dimen>
-
-    <!-- General purpose margin sizes-->
+        <!-- General purpose margin sizes-->
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_normal">8dp</dimen>
     <dimen name="margin_large">16dp</dimen>

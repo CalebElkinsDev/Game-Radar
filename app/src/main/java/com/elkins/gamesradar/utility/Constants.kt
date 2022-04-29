@@ -4,6 +4,7 @@ package com.elkins.gamesradar.utility
 class NetworkObjectConstants {
     companion object {
         const val ORIGINAL_RELEASE_DATE = "original_release_date"
+        const val DATE_UNKNOWN = "TBA"
     }
 }
 

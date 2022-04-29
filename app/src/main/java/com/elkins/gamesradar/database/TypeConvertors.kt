@@ -7,7 +7,7 @@ class TypeConvertors {
 
     /* Type convertors for "Platforms" */
     @TypeConverter
-    fun fromStringList(value: List<String>?): String? {
+    fun fromStringList(value: List<String>?): String {
         return if(value != null) {
             val sb = StringBuilder()
             for(s in value) {

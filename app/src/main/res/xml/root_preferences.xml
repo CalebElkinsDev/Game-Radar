@@ -27,7 +27,7 @@
 
     <PreferenceCategory app:title="@string/settings_section_data">
         <SwitchPreferenceCompat
-            app:title="Clear cache"
+            app:title="@string/settings_cache_title"
             app:key="clearCache"
             app:summaryOn="@string/settings_cache_summary_on"
             />

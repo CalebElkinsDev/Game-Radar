@@ -36,7 +36,7 @@ class GamesRepository(private val application: Application) {
     var databaseFilter: MutableLiveData<DatabaseFilter> = initializeDatabaseFilterFromPrefs()
 
 
-    /** WIP: Will be used to get all games within the collective timeframes the app utilizies */
+    /** WIP: Will be used to get all games within the collective timeframes the app utilizes */
     suspend fun getGamesFromNetwork() {
 
         withContext(Dispatchers.IO) {
