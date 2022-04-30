@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
+import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
+import com.elkins.gamesradar.utility.hideKeyboard
 import com.elkins.gamesradar.utility.setSupportBarTitle
 import kotlin.math.min
 
@@ -23,6 +26,7 @@ class GamesListFragment : Fragment() {
     private lateinit var binding: FragmentGamesListBinding
     private lateinit var viewModel: GamesListViewModel
     private lateinit var adapter: GamesListRecyclerViewAdapter
+    private lateinit var gameSearchView: SearchView
 
     private val columnCount = 2
 
@@ -77,6 +81,7 @@ class GamesListFragment : Fragment() {
     /** Inflate and add the games list menu */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.games_list_menu, menu)
+        initializeSearchBar(menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -100,9 +105,55 @@ class GamesListFragment : Fragment() {
         binding.list.layoutManager = GridLayoutManager(context, columnCount)
     }
 
+    /** Setup the functionality for the games search bar in the app bar. */
+    private fun initializeSearchBar(menu: Menu) {
+        gameSearchView = menu.findItem(R.id.gameSearchView).actionView as SearchView
+
+        with(gameSearchView) {
+            // Update the database filter whenever text is changed or submitted
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(text: String?): Boolean {
+                    submitTextToFilter(text)
+                    hideKeyboard()
+                    return true
+                }
+
+                override fun onQueryTextChange(text: String?): Boolean {
+                    submitTextToFilter(text)
+                    return false
+                }
+            })
+
+            // Hide the keyboard when the search view loses focus
+            setOnFocusChangeListener { _, focused ->
+                if(!focused) { hideKeyboard() }
+            }
+
+            // If there is already a name filter, expand the search view and show it
+            if(!viewModel.getFilterName().isNullOrBlank()) {
+                setQuery(viewModel.getFilterName(), false)
+                isIconified = false
+                clearFocus()
+            }
+        }
+    }
+
+    /** Update the current database filter with the text as the "name" paramter. */
+    private fun submitTextToFilter(text: String?) {
+        viewModel.updateFilterName(text)
+    }
+
     /** Called by the menu icon to open the settings fragment */
     private fun navigateToSettings() {
         findNavController().navigate(GamesListFragmentDirections
             .actionGamesListFragmentToSettingsFragment())
+        hideKeyboard()
+    }
+
+    /** Perform cleanup during onDestroy. */
+    override fun onDestroy() {
+        super.onDestroy()
+        submitTextToFilter("") // Reset the name filter
+        hideKeyboard() // Hide keyboard in case it was still showing for search bar
     }
 }

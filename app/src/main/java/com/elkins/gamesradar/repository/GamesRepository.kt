@@ -149,9 +149,14 @@ class GamesRepository(private val application: Application) {
 
         val queryPlatforms = filterPlatforms()
 
+        val queryTitle = when(filter.name.isNullOrEmpty()) {
+            true -> "" // Add nothing if no name filter
+            false -> "AND name LIKE '%${filter.name}%' "
+        }
+
         val queryOrder = "ORDER BY ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} ${filter.sortOrder}"
 
-        return SimpleSQLiteQuery(querySelect + queryReleaseDates + queryPlatforms + queryOrder)
+        return SimpleSQLiteQuery(querySelect + queryReleaseDates + queryPlatforms + queryTitle + queryOrder)
     }
 
     /** Return the filter field for original_release_date */

@@ -45,6 +45,18 @@ class GamesListViewModel(application: Application) : ViewModel() {
         }
     }
 
+    /** Update the name filter to find games containing the supplied text. Searches all when blank */
+    fun updateFilterName(text: String?) {
+        gamesRepository.databaseFilter.value = gamesRepository.databaseFilter.value.also {
+            it?.name = text
+        }
+    }
+
+    /** Get the current value of the database filter's "name" field. */
+    fun getFilterName(): String? {
+        return gamesRepository.databaseFilter.value?.name
+    }
+
     /** Update the sort order of the database filter */
     fun updateFilterSortOrder(newOrder: Boolean) {
         val orderString = if(newOrder) "asc" else "desc"

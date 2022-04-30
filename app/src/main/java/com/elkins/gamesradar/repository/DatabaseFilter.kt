@@ -10,6 +10,7 @@ import java.util.*
 class DatabaseFilter(var startDate: String,
                      var endDate: String,
                      var platforms: List<String>?,
+                     var name: String? = "",
                      var sortOrder: String? = "ASC")
 
 /**

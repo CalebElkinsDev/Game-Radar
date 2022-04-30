@@ -3,10 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/gameSearchView"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/list_appbar_search"
+        android:visible="true"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/settingsMenuButton"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings_menu_name"
         android:visible="true"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>
