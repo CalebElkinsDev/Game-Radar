@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
@@ -57,16 +58,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
             // Update the preferences summary
             setPlatformsSummary(newList)
 
+            // If the user deselected all platforms, display a Toast to alert them
+            if(newValue.isNullOrEmpty()) {
+                Toast.makeText(requireActivity(), R.string.settings_no_platforms_toast, Toast.LENGTH_LONG).show()
+            }
+
             true
         }
         setPlatformsSummary()
 
         val sortOrderPref = findPreference<SwitchPreferenceCompat>(PREF_SORT_ORDER)
         sortOrderPref?.setOnPreferenceChangeListener { preference, newValue ->
-
             viewModel.updateFilterSortOrder(newValue as Boolean)
-            Log.d("Switch", newValue.toString())
-
             true
         }
 
@@ -75,6 +78,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setCacheSummaryOff(it)
             it.setOnPreferenceChangeListener { preference, newValue ->
                 requireActivity().cacheDir.deleteRecursively()
+                Toast.makeText(requireActivity(), R.string.settings_cache_cleared_toast, Toast.LENGTH_LONG).show()
                 resetToggle(clearCachePref)
                 true
             }

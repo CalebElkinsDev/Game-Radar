@@ -26,12 +26,14 @@
     <string name="settings_release_dates">Release Dates</string>
     <string name="settings_platforms">Platforms</string>
     <string name="settings_all_selected">All</string>
-    <string name="settings_none_selected">None</string>
+    <string name="settings_none_selected">No filter: showing all platforms.</string>
     <string name="settings_sort_order">Sort Order</string>
     <string name="settings_sort_order_asc">Oldest to newest</string>
     <string name="settings_sort_order_desc">Newest to oldest</string>
     <string name="settings_cache_title">Clear Cache</string>
     <string name="settings_cache_size">Current Size: %1$s</string>
     <string name="settings_cache_summary_on">Clearing…</string>
+    <string name="settings_cache_cleared_toast">Cache cleared.</string>
+    <string name="settings_no_platforms_toast">No platforms selected!</string>
 
 </resources>

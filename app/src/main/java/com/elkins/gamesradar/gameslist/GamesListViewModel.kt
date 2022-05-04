@@ -1,10 +1,14 @@
 package com.elkins.gamesradar.gameslist
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
+import kotlinx.coroutines.launch
+import java.io.IOException
+
 class GamesListViewModel(application: Application) : ViewModel() {
 
     private val gamesRepository = GamesRepository(application)
