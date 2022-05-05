@@ -17,6 +17,9 @@ interface GamesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(games: List<DatabaseGame>)
 
+    @Query("SELECT count(*) FROM databasegame")
+    fun getDatabaseSize(): Long
+
     @Query("DELETE FROM databasegame")
     fun clearDatabase()
 }

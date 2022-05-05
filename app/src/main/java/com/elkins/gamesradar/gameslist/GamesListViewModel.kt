@@ -3,9 +3,11 @@ package com.elkins.gamesradar.gameslist
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.elkins.gamesradar.database.getDatabase
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -23,13 +25,18 @@ class GamesListViewModel(application: Application) : ViewModel() {
 
 
     init {
-        // TODO Check if database needs updated beforehand
-        viewModelScope.launch {
-            try {
-                gamesRepository.getGamesFromNetwork()
-            } catch (networkError: IOException) {
-                Log.e("Network Error", networkError.message?: "Network error " +
-                "in GamesListViewModel")
+        // Download the games database if it is empty(e.g., first use of application)
+        GlobalScope.launch {
+            val databaseSize = gamesRepository.getDatabaseSize()
+            if(databaseSize <= 0) {
+                try {
+                    gamesRepository.getGamesFromNetwork()
+                } catch (networkError: IOException) {
+                    Log.e(
+                        "Network Error", networkError.message ?: "Network error " +
+                        "in GamesListViewModel"
+                    )
+                }
             }
         }
     }

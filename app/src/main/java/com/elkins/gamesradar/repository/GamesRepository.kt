@@ -48,8 +48,6 @@ class GamesRepository(private val application: Application) {
 
         withContext(Dispatchers.IO) {
 
-            //database.gamesDao.clearDatabase() // Clear database for testing
-
             var totalGamesToAdd = -1
             var totalGamesAdded = 0
             val filter = filterReleaseDates()
@@ -90,6 +88,12 @@ class GamesRepository(private val application: Application) {
             } while(totalGamesAdded < totalGamesToAdd)
             Log.d("Network", "Finished downloding database")
         }
+    }
+
+    fun getDatabaseSize(): Long {
+        val databaseSize = database.gamesDao.getDatabaseSize()
+        Log.d("Database", "Games in db: $databaseSize")
+        return databaseSize
     }
 
     /** Return a [GameDetails] object from the API based on the guid passed to the call. */
