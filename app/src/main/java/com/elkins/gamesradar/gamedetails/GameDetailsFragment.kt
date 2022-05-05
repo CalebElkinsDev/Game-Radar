@@ -88,10 +88,10 @@ class GameDetailsFragment : Fragment() {
 
     /** Helper function for setting up the recycler view that holds teh gallery items */
     private fun initializeRecyclerView() {
-        adapter = DetailsGalleryRecyclerViewAdapter(ClickListener {
+        adapter = DetailsGalleryRecyclerViewAdapter(ClickListener { item, position ->
             //viewModel.startNavigateToDetailsPage(it.guid)
             findNavController().navigate(GameDetailsFragmentDirections
-                .actionGameDetailsFragmentToGalleryFragment(getGalleryContents().toTypedArray()))
+                .actionGameDetailsFragmentToGalleryFragment(getGalleryContents().toTypedArray(), position))
             Log.d("Gallery", "Item clicked")
         })
         binding.galleryRecyclerView.adapter = adapter

@@ -18,12 +18,15 @@ class GalleryFragment : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding
     private lateinit var galleryItems: List<GalleryItem>
+    private var startingPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Get arguments from the navigation action
         val args: GalleryFragmentArgs by navArgs()
         galleryItems = args.galleryItems.toList()
+        startingPosition = args.startingPosition
     }
 
     override fun onCreateView(
@@ -33,11 +36,14 @@ class GalleryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gallery, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        setSupportBarTitle(requireActivity(), "Images")
+        setSupportBarTitle(requireActivity(), getString(R.string.gallery_appbar_title))
 
         // Create, populate, and assign the adapter to the view pager
         val adapter = GalleryFullscreenAdapter(galleryItems)
         binding.imagesViewPager.adapter = adapter
+
+        // Move to the position of the item clicked on in the details page
+        binding.imagesViewPager.setCurrentItem(startingPosition, false)
 
         return binding.root
     }

@@ -40,5 +40,8 @@
         <argument
             android:name="galleryItems"
             app:argType="com.elkins.gamesradar.gamedetails.GalleryItem[]" />
+        <argument
+            android:name="startingPosition"
+            app:argType="integer" />
     </fragment>
 </navigation>

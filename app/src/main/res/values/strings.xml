@@ -36,4 +36,7 @@
     <string name="settings_cache_cleared_toast">Cache cleared.</string>
     <string name="settings_no_platforms_toast">No platforms selected!</string>
 
+    <!-- Gallery Strings -->
+    <string name="gallery_appbar_title">Images</string>
+
 </resources>

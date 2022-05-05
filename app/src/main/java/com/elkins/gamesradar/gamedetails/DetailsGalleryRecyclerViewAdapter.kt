@@ -21,7 +21,7 @@ class DetailsGalleryRecyclerViewAdapter(private val detailsListener: ClickListen
 
         // Bind callback for navigating to game details
         holder.itemView.setOnClickListener {
-            detailsListener.onClick(item)
+            detailsListener.onClick(item, position)
         }
     }
 
@@ -55,6 +55,6 @@ class DetailsGalleryRecyclerViewAdapter(private val detailsListener: ClickListen
 }
 
 /** Simple callback class used for handling clicks on items in the list. */
-class ClickListener(val clickListener: (game: GalleryItem) -> Unit) {
-    fun onClick(item: GalleryItem) = clickListener(item)
+class ClickListener(val clickListener: (game: GalleryItem, position: Int) -> Unit) {
+    fun onClick(item: GalleryItem, position: Int) = clickListener(item, position)
 }
