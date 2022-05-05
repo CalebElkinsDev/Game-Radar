@@ -19,16 +19,10 @@
         <item>Xbox One</item>,
         <item>Xbox Series X</item>,
         <item>Nintendo Switch</item>,
-        <item>iPhone</item>,
-        <item>iPad</item>,
-        <item>Android</item>,
+        <item>Mobile</item>
         <item>PC</item>,
         <item>Mac</item>,
         <item>Stadia</item>,
-        <item>Apple TV</item>,
-        <item>Nintendo 3DS</item>,
-        <item>3DS eShop</item>,
-        <item>New 3DS</item>,
         <item>Arcade</item>,
         <item>Browser</item>
     </string-array>
@@ -39,16 +33,10 @@
         <item>XONE</item>,
         <item>XSX</item>,
         <item>NSW</item>,
-        <item>IPHN</item>,
-        <item>IPAD</item>,
-        <item>ANDR</item>,
+        <item>MOBILE</item>
         <item>PC</item>,
         <item>MAC</item>,
         <item>STAD</item>,
-        <item>APTV</item>,
-        <item>3DS</item>,
-        <item>3DSE</item>,
-        <item>N3DS</item>,
         <item>ARC</item>,
         <item>BROW</item>
     </string-array>

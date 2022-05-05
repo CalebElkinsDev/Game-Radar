@@ -1,9 +1,6 @@
 package com.elkins.gamesradar.repository
 
 import android.app.Application
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,12 +20,8 @@ import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
 import com.elkins.gamesradar.utility.originalReleaseDateFormat
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.concurrent.schedule
-import kotlin.math.min
 
 class GamesRepository(private val application: Application) {
 
@@ -198,9 +191,19 @@ class GamesRepository(private val application: Application) {
         // Get the selected platforms from the current filter
         val platforms = databaseFilter.value?.platforms?: emptyList()
 
-        return if (!platforms.isNullOrEmpty()) {
+        val platformsExpanded: MutableList<String> = platforms.map {
+            it
+        }.toMutableList()
+
+        // Replace the group tag "MOBILE", with individual elements
+        if(platformsExpanded.contains("MOBILE")) {
+            platformsExpanded.addAll(listOf("IPHN", "IPAD", "ANDR"))
+            platformsExpanded.remove("MOBILE")
+        }
+
+        return if (!platformsExpanded.isNullOrEmpty()) {
             // Create a LIKE statement for each platform selected
-            platforms.joinToString(prefix = "AND (", postfix = ")", separator = " OR ") {
+            platformsExpanded.joinToString(prefix = "AND (", postfix = ")", separator = " OR ") {
                 "platforms LIKE '%${it}%'"
             }
         } else {

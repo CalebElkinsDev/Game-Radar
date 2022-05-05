@@ -54,6 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             // Convert the preferences HashSet to an Array
             val newList = mutableListOf<String>()
             for(item in (newValue as HashSet<String>)) {
+                Log.d("Tag", item)
                 newList.add(item)
             }
             // Notify the view model of a filter change
