@@ -10,19 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGalleryBinding
+import com.elkins.gamesradar.gamedetails.GalleryItem
 import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
 class GalleryFragment : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding
-    private lateinit var galleryImages: List<String>
+    private lateinit var galleryItems: List<GalleryItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val args: GalleryFragmentArgs by navArgs()
-        galleryImages = args.imageUrls.toList()
+        galleryItems = args.galleryItems.toList()
     }
 
     override fun onCreateView(
@@ -34,7 +35,9 @@ class GalleryFragment : Fragment() {
 
         setSupportBarTitle(requireActivity(), "Images")
 
-        binding.imageUrls = galleryImages[0] // Test showing first image
+        // Create, populate, and assign the adapter to the view pager
+        val adapter = GalleryFullscreenAdapter(galleryItems)
+        binding.imagesViewPager.adapter = adapter
 
         return binding.root
     }

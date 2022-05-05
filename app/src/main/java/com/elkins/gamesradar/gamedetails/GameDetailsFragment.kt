@@ -24,7 +24,6 @@ class GameDetailsFragment : Fragment() {
     private lateinit var viewModel: GameDetailsViewModel
     private lateinit var adapter: DetailsGalleryRecyclerViewAdapter
     private lateinit var guid: String
-    private lateinit var galleryImages: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +65,6 @@ class GameDetailsFragment : Fragment() {
         viewModel.gameDetails.observe(viewLifecycleOwner) {
             if(it != null) {
                 setSupportBarTitle(requireActivity(), it.name) // Update app bar title
-                galleryImages = getGalleryContents().map { item ->
-                    item.imageUrl
-                }
                 adapter.submitList(getGalleryContents()) // Submit photos/videos to recycler view
                 finishLoading()
             } else {
@@ -95,7 +91,7 @@ class GameDetailsFragment : Fragment() {
         adapter = DetailsGalleryRecyclerViewAdapter(ClickListener {
             //viewModel.startNavigateToDetailsPage(it.guid)
             findNavController().navigate(GameDetailsFragmentDirections
-                .actionGameDetailsFragmentToGalleryFragment(galleryImages.toTypedArray()))
+                .actionGameDetailsFragmentToGalleryFragment(getGalleryContents().toTypedArray()))
             Log.d("Gallery", "Item clicked")
         })
         binding.galleryRecyclerView.adapter = adapter

@@ -10,13 +10,20 @@
     </data>
 
     <FrameLayout
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageTest"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/imagesViewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:thumbnail="@{imageUrls}" />
+            android:layout_height="match_parent" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageTest"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            app:thumbnail="@{imageUrls}" />-->
     </FrameLayout>
 </layout>

@@ -38,7 +38,7 @@
         android:name="com.elkins.gamesradar.gallery.GalleryFragment"
         android:label="GalleryFragment" >
         <argument
-            android:name="imageUrls"
-            app:argType="string[]" />
+            android:name="galleryItems"
+            app:argType="com.elkins.gamesradar.gamedetails.GalleryItem[]" />
     </fragment>
 </navigation>

@@ -1,3 +1,7 @@
 package com.elkins.gamesradar.gamedetails
 
-data class GalleryItem(val imageUrl: String)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class GalleryItem(val imageUrl: String) : Parcelable

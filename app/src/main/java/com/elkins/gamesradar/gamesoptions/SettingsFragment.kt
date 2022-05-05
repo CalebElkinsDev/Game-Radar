@@ -4,6 +4,9 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
@@ -20,6 +23,7 @@ import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORM
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
 import com.elkins.gamesradar.utility.getAppCacheSize
+import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -85,6 +89,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Manually set the Appbar title
+        setSupportBarTitle(requireActivity(), getString(R.string.settings_menu_name))
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     /** Update the summary for the platforms section based on the existing preferences */
     private fun setPlatformsSummary() {
