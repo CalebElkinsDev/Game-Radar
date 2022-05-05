@@ -153,7 +153,9 @@ class GamesListFragment : Fragment() {
     /** Perform cleanup during onDestroy. */
     override fun onDestroy() {
         super.onDestroy()
-        submitTextToFilter("") // Reset the name filter
+        if(::viewModel.isInitialized) {
+            submitTextToFilter("") // Reset the name filter
+        }
         hideKeyboard() // Hide keyboard in case it was still showing for search bar
     }
 }
