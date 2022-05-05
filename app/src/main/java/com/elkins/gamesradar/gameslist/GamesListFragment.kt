@@ -47,6 +47,12 @@ class GamesListFragment : Fragment() {
         viewModel.games.observe(viewLifecycleOwner) {
             adapter.submitList(it) // Update the recycler view when the data changes
 
+            // Show or hide the "No Results" message
+            binding.noResultsTextView.visibility = when(it.isEmpty()) {
+                true -> View.VISIBLE
+                false -> View.GONE
+            }
+
             // Jump to near the beginning of the list and then smooth scroll to start on changes
             // TODO Trigger this only when filters change, not when a game is favorited
             object : CountDownTimer(100, 100) {

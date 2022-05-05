@@ -4,6 +4,7 @@
     <!-- Games list Strings -->
     <string name="list_appbar_title">Games Radar</string>
     <string name="list_appbar_search">Search</string>
+    <string name="list_no_results">No results</string>
 
     <!-- Details Page Strings -->
     <string name="details_header_genres">Genres</string>
