@@ -23,15 +23,15 @@ class GamesListViewModel(application: Application) : ViewModel() {
 
 
     init {
-//        // TODO Check if database needs updated beforehand
-//        viewModelScope.launch {
-//            try {
-//                gamesRepository.getGamesFromNetwork()
-//            } catch (networkError: IOException) {
-//                Log.e("Network Error", networkError.message?: "Network error " +
-//                "in GamesListViewModel")
-//            }
-//        }
+        // TODO Check if database needs updated beforehand
+        viewModelScope.launch {
+            try {
+                gamesRepository.getGamesFromNetwork()
+            } catch (networkError: IOException) {
+                Log.e("Network Error", networkError.message?: "Network error " +
+                "in GamesListViewModel")
+            }
+        }
     }
 
     /** Update the platforms to filer the repository by */

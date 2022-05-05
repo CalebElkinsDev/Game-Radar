@@ -1,6 +1,9 @@
 package com.elkins.gamesradar.repository
 
 import android.app.Application
+import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,8 +23,12 @@ import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
 import com.elkins.gamesradar.utility.originalReleaseDateFormat
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.math.min
 
 class GamesRepository(private val application: Application) {
 
@@ -41,7 +48,7 @@ class GamesRepository(private val application: Application) {
 
         withContext(Dispatchers.IO) {
 
-            database.gamesDao.clearDatabase() // Clear database for testing
+            //database.gamesDao.clearDatabase() // Clear database for testing
 
             var totalGamesToAdd = -1
             var totalGamesAdded = 0
@@ -57,7 +64,7 @@ class GamesRepository(private val application: Application) {
                 if (response.body() != null) {
 
                     // Determine how many games to add during the first loop
-                    if(totalGamesToAdd == -1) {
+                    if (totalGamesToAdd == -1) {
                         totalGamesToAdd = response.body()!!.totalResults
                     }
 
@@ -75,9 +82,13 @@ class GamesRepository(private val application: Application) {
                     )
                 } else {
                     Log.d("Repository", "Response body null")
-                    break
                 }
-            } while(totalGamesAdded < 1000) //totalGamesToAdd)
+
+                // Delay for 1 second between API calls per API request limitations
+                Thread.sleep(1050)
+
+            } while(totalGamesAdded < totalGamesToAdd)
+            Log.d("Network", "Finished downloding database")
         }
     }
 
