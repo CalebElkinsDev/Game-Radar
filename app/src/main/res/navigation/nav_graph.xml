@@ -25,9 +25,20 @@
         <argument
             android:name="guid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_gameDetailsFragment_to_galleryFragment"
+            app:destination="@id/galleryFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.elkins.gamesradar.gamesoptions.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.elkins.gamesradar.gallery.GalleryFragment"
+        android:label="GalleryFragment" >
+        <argument
+            android:name="imageUrls"
+            app:argType="string[]" />
+    </fragment>
 </navigation>
