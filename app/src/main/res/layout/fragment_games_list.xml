@@ -25,7 +25,7 @@
 
         <LinearLayout
             android:id="@+id/downloadingDBGroup"
-            android:layout_width="wrap_content"
+            android:layout_width="172dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/faded_background"
@@ -39,12 +39,13 @@
                 android:id="@+id/downloadingStatusTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/network_db_downloading_message" />
+                android:text="@string/network_db_downloading_message"
+                tools:text="Downloading Games"/>
 
             <ProgressBar
                 android:id="@+id/downloadingProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="160dp"
+                android:layout_width="120dp"
                 android:layout_height="16dp" />
 
         </LinearLayout>
