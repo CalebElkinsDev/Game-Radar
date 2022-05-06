@@ -19,9 +19,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:text="@string/list_no_results"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:text="@string/list_no_results"/>
+            tools:visibility="invisible" />
+
+        <LinearLayout
+            android:id="@+id/downloadingDBGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/faded_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/downloadingStatusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/network_db_downloading_message" />
+
+            <ProgressBar
+                android:id="@+id/downloadingProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="160dp"
+                android:layout_height="16dp" />
+
+        </LinearLayout>
+
 
     </FrameLayout>
 

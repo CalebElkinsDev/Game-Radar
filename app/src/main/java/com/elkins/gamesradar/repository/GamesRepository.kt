@@ -39,6 +39,10 @@ class GamesRepository(private val application: Application) {
         database.gamesDao.clearDatabase()
     }
 
+    private var _databaseProgress = MutableLiveData(-1)
+    val databaseProgress: LiveData<Int>
+        get() = _databaseProgress
+
     /** WIP: Will be used to get all games within the collective timeframes the app utilizes */
     suspend fun getGamesFromNetwork() {
 
@@ -69,6 +73,10 @@ class GamesRepository(private val application: Application) {
 
                     totalGamesAdded += response.body()!!.results.size
 
+                    // Update the progress live data
+                    val progress: Double = (totalGamesAdded / totalGamesToAdd.toDouble()) * 100
+                    _databaseProgress.postValue(progress.toInt())
+
                     Log.d(
                         "Response Body", "Offset: ${response.body()!!.offset}" +
                                 ", Total Games: ${response.body()!!.totalResults}" +
@@ -82,6 +90,9 @@ class GamesRepository(private val application: Application) {
                 Thread.sleep(1050)
 
             } while(totalGamesAdded < totalGamesToAdd)
+
+            // Download finished
+            _databaseProgress.postValue(100)
             Log.d("Network", "Finished downloding database")
         }
     }

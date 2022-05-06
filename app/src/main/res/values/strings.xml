@@ -40,4 +40,8 @@
     <!-- Gallery Strings -->
     <string name="gallery_appbar_title">Images</string>
 
+    <!-- Network Strings -->
+    <string name="network_db_downloading_message">Downloading</string>
+    <string name="network_db_download_complete">Complete!</string>
+
 </resources>

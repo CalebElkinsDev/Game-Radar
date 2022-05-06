@@ -74,12 +74,33 @@ class GamesListFragment : Fragment() {
             }
         }
 
+        // Observe and handle the database downloading progress
+        viewModel.databaseProgress.observe(viewLifecycleOwner) {
+            when(it) {
+                in 1..99 -> {
+                    binding.downloadingDBGroup.visibility = View.VISIBLE
+                    binding.downloadingStatusTextView.text = getString(R.string.network_db_downloading_message)
+                    binding.downloadingProgressBar.progress = it
+                }
+                100 -> {
+                    binding.downloadingStatusTextView.text = getString(R.string.network_db_download_complete)
+                    binding.downloadingProgressBar.progress = it
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.downloadingDBGroup.visibility = View.GONE
+                    }, 500)
+                }
+                else -> {
+                    binding.downloadingDBGroup.visibility = View.GONE
+                }
+            }
+        }
+
         // Enable the app bar menu
         setHasOptionsMenu(true)
 
         // Set the title for the appbar
         setSupportBarTitle(requireActivity(), getString(R.string.list_appbar_title))
-
         return binding.root
     }
 

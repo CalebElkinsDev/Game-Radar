@@ -27,19 +27,22 @@ class GamesListViewModel(application: Application) : ViewModel() {
     val scrollToStartEvent: LiveData<Boolean>
         get() = _scrollToStartEvent
 
+    val databaseProgress = gamesRepository.databaseProgress
+
     init {
         // Download the games database if it is empty(e.g., first use of application)
         GlobalScope.launch {
             //gamesRepository.clearDatabase()
             val databaseSize = gamesRepository.getDatabaseSize()
-            if(databaseSize <= 0) {
+//            if(databaseSize <= 0) {
+            if(true) {
                 try {
                     gamesRepository.getGamesFromNetwork()
                 } catch (networkError: IOException) {
                     Log.e(
                         "Network Error", networkError.message ?: "Network error " +
-                        "in GamesListViewModel"
-                    )
+                        "in GamesListViewModel")
+                    // TODO Handle error in Fragment
                 }
             }
         }
