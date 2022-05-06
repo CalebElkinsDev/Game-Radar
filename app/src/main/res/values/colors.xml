@@ -12,4 +12,6 @@
     <color name="bodyTextColorDay">#505050</color>
 
     <color name="activity_bg_color_day">#ededed</color>
+
+    <color name="placeholder_tint">#a1a1a1</color>
 </resources>
