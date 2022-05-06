@@ -23,6 +23,9 @@ class GamesListViewModel(application: Application) : ViewModel() {
     val gameToNavigateTo: LiveData<String?>
         get() = _gameToNavigateTo
 
+    private val _scrollToStartEvent = MutableLiveData(false)
+    val scrollToStartEvent: LiveData<Boolean>
+        get() = _scrollToStartEvent
 
     init {
         // Download the games database if it is empty(e.g., first use of application)
@@ -55,6 +58,7 @@ class GamesListViewModel(application: Application) : ViewModel() {
             it?.startDate = getDatabaseFilterStartDate(releaseWindow)
             it?.endDate = getDatabaseFilterEndDate(releaseWindow)
         }
+        startScrollToStartEvent() // Notify fragment to scroll to starting position
     }
 
     /** Update the name filter to find games containing the supplied text. Searches all when blank */
@@ -83,6 +87,14 @@ class GamesListViewModel(application: Application) : ViewModel() {
 
     fun navigateToDetailsPageHandled() {
         _gameToNavigateTo.value = null
+    }
+
+    private fun startScrollToStartEvent() {
+        _scrollToStartEvent.value = true
+    }
+
+    fun handleScrollToStartEvent() {
+        _scrollToStartEvent.value = false
     }
 }
 

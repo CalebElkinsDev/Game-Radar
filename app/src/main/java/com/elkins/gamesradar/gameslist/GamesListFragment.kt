@@ -2,6 +2,8 @@ package com.elkins.gamesradar.gameslist
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
@@ -52,17 +54,6 @@ class GamesListFragment : Fragment() {
                 true -> View.VISIBLE
                 false -> View.GONE
             }
-
-            // Jump to near the beginning of the list and then smooth scroll to start on changes
-            // TODO Trigger this only when filters change, not when a game is favorited
-            object : CountDownTimer(100, 100) {
-                override fun onTick(millisUntilFinished: Long) { }
-
-                override fun onFinish() {
-                    binding.list.scrollToPosition(min(8, it.size))
-                    binding.list.smoothScrollToPosition(0)
-                }
-            }.start()
         }
 
         viewModel.gameToNavigateTo.observe(viewLifecycleOwner) {
@@ -72,6 +63,14 @@ class GamesListFragment : Fragment() {
                     GamesListFragmentDirections.actionGamesListFragmentToGameDetailsFragment(it)
                 )
                 viewModel.navigateToDetailsPageHandled() // Clear the live data event after handled
+            }
+        }
+
+        // Scroll to start of list and handle live data event
+        viewModel.scrollToStartEvent.observe(viewLifecycleOwner) {
+            if(it) {
+                scrollToStart()
+                viewModel.handleScrollToStartEvent()
             }
         }
 
@@ -163,5 +162,18 @@ class GamesListFragment : Fragment() {
             submitTextToFilter("") // Reset the name filter
         }
         hideKeyboard() // Hide keyboard in case it was still showing for search bar
+    }
+
+    /** Scroll near the beginning of the list and then smooth scroll to first position. */
+    private fun scrollToStart() {
+        val handler = Handler(Looper.getMainLooper())
+
+        handler.postDelayed({
+            binding.list.scrollToPosition(min(8, adapter.currentList.size))
+        }, 100)
+
+        handler.postDelayed({
+            binding.list.smoothScrollToPosition(0)
+        }, 200)
     }
 }
