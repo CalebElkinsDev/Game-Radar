@@ -2,6 +2,7 @@ package com.elkins.gamesradar.utility
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -23,6 +24,20 @@ fun fetchImage(view: ImageView, src: String?) {
             .apply(RequestOptions()
                 .placeholder(R.drawable.ic_image_placeholder_24)
                 .error(R.drawable.ic_baseline_error_outline_24))
+            .into(view)
+    }
+}
+
+// Use Glide to load a game's full image from url
+@BindingAdapter("galleryImage")
+fun fetchGalleryImage(view: ImageView, src: String?) {
+    src?.let {
+        val uri = src.toUri().buildUpon().scheme("https").build()
+        Glide.with(view.context)
+            .load(uri)
+            .apply(RequestOptions()
+                .placeholder(R.drawable.ic_image_placeholder_light)
+                .error(R.drawable.ic_baseline_error_outline_light))
             .into(view)
     }
 }
