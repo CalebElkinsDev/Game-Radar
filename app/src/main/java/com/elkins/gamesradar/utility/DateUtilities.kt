@@ -58,24 +58,24 @@ fun NetworkGame.calculateReleaseTimeInMillis(): Long {
         }
     }  else if(expectedReleaseYear != null && expectedReleaseMonth != null
         && expectedReleaseDay != null) {
-
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, expectedReleaseYear)
-        calendar.set(Calendar.MONTH, expectedReleaseMonth)
+        calendar.set(Calendar.MONTH, expectedReleaseMonth-1)
         calendar.set(Calendar.DAY_OF_MONTH, expectedReleaseDay)
 
         return calendar.timeInMillis
 
     } else if(expectedReleaseMonth != null && expectedReleaseYear != null) {
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, expectedReleaseMonth)
+        calendar.set(Calendar.MONTH, expectedReleaseMonth-1)
+        calendar.set(Calendar.DAY_OF_MONTH, 28)
         calendar.set(Calendar.YEAR, expectedReleaseYear)
 
         return calendar.timeInMillis
 
     } else if(expectedReleaseQuarter != null) {
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, expectedReleaseQuarter * 3)
+        calendar.set(Calendar.MONTH, (expectedReleaseQuarter * 3) - 1)
         calendar.set(Calendar.YEAR, expectedReleaseYear!!)
 
         return calendar.timeInMillis

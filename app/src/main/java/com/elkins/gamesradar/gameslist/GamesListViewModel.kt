@@ -27,6 +27,7 @@ class GamesListViewModel(application: Application) : ViewModel() {
     init {
         // Download the games database if it is empty(e.g., first use of application)
         GlobalScope.launch {
+            //gamesRepository.clearDatabase()
             val databaseSize = gamesRepository.getDatabaseSize()
             if(databaseSize <= 0) {
                 try {

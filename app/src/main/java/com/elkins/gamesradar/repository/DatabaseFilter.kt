@@ -60,7 +60,6 @@ fun getDatabaseFilterEndDate(releaseWindow: GamesRepository.ReleaseWindow): Stri
         }
         GamesRepository.ReleaseWindow.PAST_MONTH, GamesRepository.ReleaseWindow.PAST_YEAR -> {
             calendar.timeInMillis = System.currentTimeMillis()
-            originalReleaseDateFormat.format(calendar.time)
             calendar.timeInMillis
         }
     }

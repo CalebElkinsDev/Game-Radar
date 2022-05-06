@@ -35,6 +35,9 @@ class GamesRepository(private val application: Application) {
     /** The LiveData that is observed for getting filtered results from the database*/
     var databaseFilter: MutableLiveData<DatabaseFilter> = initializeDatabaseFilterFromPrefs()
 
+    fun clearDatabase() {
+        database.gamesDao.clearDatabase()
+    }
 
     /** WIP: Will be used to get all games within the collective timeframes the app utilizes */
     suspend fun getGamesFromNetwork() {

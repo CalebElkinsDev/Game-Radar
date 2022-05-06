@@ -54,7 +54,7 @@ fun TextView.displayReleaseDate(game: DatabaseGame) {
 
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, expectedReleaseYear)
-            calendar.set(Calendar.MONTH, expectedReleaseMonth)
+            calendar.set(Calendar.MONTH, expectedReleaseMonth-1)
             calendar.set(Calendar.DAY_OF_MONTH, expectedReleaseDay)
 
             text = originalReleaseDateDisplayFormat.format(calendar.time)
@@ -62,7 +62,9 @@ fun TextView.displayReleaseDate(game: DatabaseGame) {
         } else if (expectedReleaseMonth > 0 && expectedReleaseYear > 0) {
 
             val calendar = Calendar.getInstance()
-            calendar.set(Calendar.MONTH, expectedReleaseMonth)
+            calendar.set(Calendar.YEAR, expectedReleaseYear)
+            calendar.set(Calendar.MONTH, expectedReleaseMonth-1)
+            calendar.set(Calendar.DAY_OF_MONTH, 28)
 
             val release = "${monthOnlyDateFormat.format(calendar.time)}, $expectedReleaseYear"
             text = release
