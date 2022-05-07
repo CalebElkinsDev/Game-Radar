@@ -15,6 +15,7 @@ import com.elkins.gamesradar.network.asDatabaseModel
 import com.elkins.gamesradar.network.asDomainModel
 import com.elkins.gamesradar.utility.DatabaseConstants
 import com.elkins.gamesradar.utility.NetworkObjectConstants
+import com.elkins.gamesradar.utility.NetworkObjectConstants.Companion.PLATFORM_FILTER
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORMS
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
@@ -50,7 +51,7 @@ class GamesRepository(private val application: Application) {
 
             var totalGamesToAdd = -1
             var totalGamesAdded = 0
-            val filter = filterReleaseDates()
+            val filter = getAllGamesNetworkFilter()
 
             do {
                 val response = GiantBombApi.retrofitService.getAllGames(
@@ -169,7 +170,7 @@ class GamesRepository(private val application: Application) {
         val queryReleaseDates = "WHERE ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} > ${filter.startDate} " +
                 "AND ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} < ${filter.endDate} "
 
-        val queryPlatforms = filterPlatforms()
+        val queryPlatforms = databaseFilterPlatforms()
 
         val queryTitle = when(filter.name.isNullOrEmpty()) {
             true -> "" // Add nothing if no name filter
@@ -181,9 +182,15 @@ class GamesRepository(private val application: Application) {
         return SimpleSQLiteQuery(querySelect + queryReleaseDates + queryPlatforms + queryTitle + queryOrder)
     }
 
-    /** Return the filter field for original_release_date */
-    private fun filterReleaseDates(): String {
+    /** Create and return the complete filter for the "games" endpoint filter param */
+    private fun getAllGamesNetworkFilter(): String {
+        var filter = getNetworkReleaseDateFilter()
+        filter += ",${PLATFORM_FILTER}"
+        return filter
+    }
 
+    /** Return the filter field for original_release_date */
+    private fun getNetworkReleaseDateFilter(): String {
         val calendar: Calendar = Calendar.getInstance()
 
         /* Get the start time for filter */
@@ -200,7 +207,7 @@ class GamesRepository(private val application: Application) {
     }
 
     /** Format SQL filter for currently selected platforms */
-    private fun filterPlatforms(): String {
+    private fun databaseFilterPlatforms(): String {
 
         // Get the selected platforms from the current filter
         val platforms = databaseFilter.value?.platforms?: emptyList()

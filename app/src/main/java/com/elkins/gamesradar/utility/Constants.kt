@@ -5,6 +5,7 @@ class NetworkObjectConstants {
     companion object {
         const val ORIGINAL_RELEASE_DATE = "original_release_date"
         const val DATE_UNKNOWN = "TBA"
+        const val PLATFORM_FILTER = "platforms:146|176|146|179|157|96|120|123|94|17|175|84|140"
     }
 }
 
@@ -26,26 +27,22 @@ class PreferenceConstants {
 }
 
 /** Data class for getting relevant platforms and their preferred order */
-data class Platform(private val name: String, private val abbreviation: String)
+data class Platform(val name: String, val abbreviation: String, val id: Int)
 
 /** A List containing all applicable platforms. Entries in order they should appear in lists */
 val ALL_PLATFORMS = listOf(
-    Platform("PS4", "PlayStation 4"),
-    Platform("PS5", "PlayStation 5"),
-    Platform("XONE", "Xbox One"),
-    Platform("XSX", "Xbox Series X"),
-    Platform("NSW", "Nintendo Switch"),
-    Platform("IPHN", "iPhone"),
-    Platform("IPAD", "iPad"),
-    Platform("ANDR", "Android"),
-    Platform("PC", "PC"),
-    Platform("MAC", "Mac"),
-    Platform("STAD", "Stadia"),
-    Platform("APTV", "Apple TV"),
-    Platform("3DS", "Nintendo 3DS"),
-    Platform("3DSE", "3DS eShop"),
-    Platform("N3DS", "New 3DS"),
-    Platform("ARC", "Arcade"),
-    Platform("BROW", "Browser"),
-    Platform("NONE", "No platforms")
+    Platform("PS4", "PlayStation 4", 146),
+    Platform("PS5", "PlayStation 5", 176),
+    Platform("XONE", "Xbox One", 145),
+    Platform("XSX", "Xbox Series X", 179),
+    Platform("NSW", "Nintendo Switch", 157),
+    Platform("IPHN", "iPhone", 96),
+    Platform("IPAD", "iPad", 120),
+    Platform("ANDR", "Android", 123),
+    Platform("PC", "PC", 94),
+    Platform("MAC", "Mac", 17),
+    Platform("STAD", "Stadia", 175),
+    Platform("ARC", "Arcade", 84),
+    Platform("BROW", "Browser", 140),
+    Platform("NONE", "No platforms", -1)
 )
