@@ -22,6 +22,9 @@ interface GamesDao {
 
     @Query("DELETE FROM databasegame")
     fun clearDatabase()
+
+    @Query("UPDATE databasegame SET following = :following WHERE id = :id")
+    fun updateFollowing(following: Boolean, id: Long)
 }
 
 @TypeConverters(TypeConvertors::class)

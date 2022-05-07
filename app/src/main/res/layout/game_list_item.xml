@@ -26,7 +26,7 @@
                 android:id="@+id/thumbnailImageView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:scaleType="fitCenter"
+                android:scaleType="center"
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,15 +35,27 @@
                 app:thumbnail="@{game.imageUrl}"
                 android:contentDescription="@string/details_content_desc_main_image" />
 
+            <ToggleButton
+                android:id="@+id/followingToggleButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:checked="@{game.following}"
+                android:text=""
+                android:textOff=""
+                android:textOn=""
+                style="@style/Widget.Button.Toggle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/thumbnailImageView" />
+
             <TextView
                 android:id="@+id/gameName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:text="@{game.name}"
                 android:textAppearance="@style/Header"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/followingToggleButton"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/thumbnailImageView"
@@ -53,7 +65,7 @@
                 android:id="@+id/releaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/followingToggleButton"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gameName"
