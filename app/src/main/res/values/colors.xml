@@ -3,15 +3,22 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="navy_light">#3543A6</color>
     <color name="navy_med">#283593</color>
+    <color name="navy_med_dark">#172570</color>
     <color name="navy_dark">#001064</color>
+
+    <color name="teal_med">#35BA9B</color>
+    <color name="teal_dark">#0D8E65</color>
 
     <color name="headerColorDay">#3a3a3a</color>
     <color name="headerColorNight">#e2e2e2</color>
 
     <color name="bodyTextColorDay">#505050</color>
+    <color name="bodyTextColorNight">#cfcfcf</color>
 
     <color name="activity_bg_color_day">#ededed</color>
+    <color name="activity_bg_color_night">#071027</color>
 
     <color name="placeholder_tint">#a1a1a1</color>
 </resources>
