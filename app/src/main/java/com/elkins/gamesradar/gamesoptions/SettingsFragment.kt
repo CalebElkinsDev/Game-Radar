@@ -8,14 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.gameslist.GamesListViewModel
-import com.elkins.gamesradar.gameslist.GamesListViewModelFactory
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.CACHE_CLEAR_TIMER
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_CLEAR_CACHE
@@ -28,14 +27,10 @@ import com.elkins.gamesradar.utility.setSupportBarTitle
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private lateinit var viewModel: GamesListViewModel// by viewModels()
+    private val viewModel by viewModels<GamesListViewModel>()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-
-        // Initialize ViewModel
-        val viewModelFactory = GamesListViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(GamesListViewModel::class.java)
 
         // Setup a onPreferenceChangeListener for the "Release Window" preference
         val releasesPref = findPreference<ListPreference>(PREF_RELEASE_WINDOW)

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,7 +21,7 @@ class GameDetailsFragment : Fragment() {
     private val galleryColumns = 3
 
     private lateinit var binding: FragmentGameDetailsBinding
-    private lateinit var viewModel: GameDetailsViewModel
+    private val viewModel by viewModels<GameDetailsViewModel>()
     private lateinit var adapter: DetailsGalleryRecyclerViewAdapter
     private lateinit var guid: String
 
@@ -31,11 +31,6 @@ class GameDetailsFragment : Fragment() {
         // Get guid from nav arguments
         val args: GameDetailsFragmentArgs by navArgs()
         guid = args.guid
-
-        // Initialize ViewModel
-        val viewModelFactory = GamesDetailsViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
-            .get(GameDetailsViewModel::class.java)
 
         // Have the view model fetch the details for the current game
         viewModel.fetchGameDetails(guid)

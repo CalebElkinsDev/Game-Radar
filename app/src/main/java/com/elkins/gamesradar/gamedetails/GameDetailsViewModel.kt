@@ -1,14 +1,13 @@
 package com.elkins.gamesradar.gamedetails
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.elkins.gamesradar.repository.GamesRepository
+import com.elkins.gamesradar.GamesRadarApp
 import kotlinx.coroutines.launch
 
 
-class GameDetailsViewModel(application: Application): ViewModel() {
+class GameDetailsViewModel: ViewModel() {
 
-    private val gamesRepository = GamesRepository(application)
+    private val gamesRepository = GamesRadarApp.REPOSITORY
 
     var gameDetails = MutableLiveData<GameDetails?>()
 
@@ -39,12 +38,4 @@ class GameDetailsViewModel(application: Application): ViewModel() {
         _networkErrorEvent.value = false
     }
 
-}
-
-/** Simple factory for creating a [GameDetailsViewModel] with application and guid arguments */
-class GamesDetailsViewModelFactory(private val application: Application)
-    : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return GameDetailsViewModel(application) as T
-    }
 }

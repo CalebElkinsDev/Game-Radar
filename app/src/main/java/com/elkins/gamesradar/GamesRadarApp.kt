@@ -18,15 +18,16 @@ class GamesRadarApp : Application() {
         delayedInit()
     }
 
+    /** Initialize the [GamesRepository] instance and setup recurring work */
     private fun delayedInit() {
-
-        REPOSITORY = GamesRepository(this)
+        _REPOSITORY = GamesRepository(this)
 
         CoroutineScope(Dispatchers.Default).launch {
             setupWork()
         }
     }
 
+    /** Build and start the [NetworkWorker] for periodically updating the database. */
     private fun setupWork() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -34,14 +35,13 @@ class GamesRadarApp : Application() {
             .build()
 
         val repeatingRequest =
-            PeriodicWorkRequestBuilder<NetworkWorker>(3, TimeUnit.DAYS) //, 1, TimeUnit.HOURS)
-                //.setConstraints(constraints)
-//                .setInitialDelay(3, TimeUnit.DAYS)
-                .setInitialDelay(5, TimeUnit.SECONDS)
-//                .setBackoffCriteria(
-//                    BackoffPolicy.LINEAR,
-//                    BACK_OFF_TIME,
-//                    TimeUnit.MILLISECONDS)
+            PeriodicWorkRequestBuilder<NetworkWorker>(3, TimeUnit.DAYS, 1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .setInitialDelay(3, TimeUnit.DAYS)
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR,
+                    BACK_OFF_TIME,
+                    TimeUnit.MILLISECONDS)
                 .build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
@@ -52,6 +52,9 @@ class GamesRadarApp : Application() {
     }
 
     companion object {
-        lateinit var REPOSITORY: GamesRepository
+        // Singleton GamesRepostiory to be used through the application
+        private lateinit var _REPOSITORY: GamesRepository
+        val REPOSITORY: GamesRepository
+            get() = _REPOSITORY
     }
 }

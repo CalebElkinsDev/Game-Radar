@@ -1,8 +1,8 @@
 package com.elkins.gamesradar.gameslist
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.elkins.gamesradar.GamesRadarApp
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 
-class GamesListViewModel(application: Application) : ViewModel() {
+class GamesListViewModel : ViewModel() {
 
-    private val gamesRepository = GamesRepository(application)
+    private val gamesRepository = GamesRadarApp.REPOSITORY
 
     val games = Transformations.switchMap(gamesRepository.databaseFilter) {
         gamesRepository.getGames(it)
@@ -108,11 +108,5 @@ class GamesListViewModel(application: Application) : ViewModel() {
 
     fun handleScrollToStartEvent() {
         _scrollToStartEvent.value = false
-    }
-}
-
-class GamesListViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return GamesListViewModel(application) as T
     }
 }

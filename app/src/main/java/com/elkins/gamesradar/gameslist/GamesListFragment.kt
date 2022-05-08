@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,7 +31,7 @@ import kotlin.math.min
 class GamesListFragment : Fragment() {
 
     private lateinit var binding: FragmentGamesListBinding
-    private lateinit var viewModel: GamesListViewModel
+    private val viewModel by viewModels<GamesListViewModel>()
     private lateinit var adapter: GamesListRecyclerViewAdapter
     private lateinit var gameSearchView: SearchView
 
@@ -45,10 +46,6 @@ class GamesListFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeRecyclerView()
-
-        // Initialize ViewModel
-        val viewModelFactory = GamesListViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(GamesListViewModel::class.java)
 
         viewModel.games.observe(viewLifecycleOwner) {
             adapter.submitList(it) // Update the recycler view when the data changes
@@ -189,9 +186,7 @@ class GamesListFragment : Fragment() {
     /** Perform cleanup during onDestroy. */
     override fun onDestroy() {
         super.onDestroy()
-        if(::viewModel.isInitialized) {
-            submitTextToFilter("") // Reset the name filter
-        }
+        submitTextToFilter("") // Reset the name filter
         hideKeyboard() // Hide keyboard in case it was still showing for search bar
     }
 
