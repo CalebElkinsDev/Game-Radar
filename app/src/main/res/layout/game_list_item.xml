@@ -35,17 +35,26 @@
                 app:thumbnail="@{game.imageUrl}"
                 android:contentDescription="@string/details_content_desc_main_image" />
 
-            <ToggleButton
-                android:id="@+id/followingToggleButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:checked="@{game.following}"
-                android:text=""
-                android:textOff=""
-                android:textOn=""
-                style="@style/Widget.Button.Toggle"
+            <LinearLayout
+                android:id="@+id/toggleLayout"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="top|end"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/thumbnailImageView" />
+                app:layout_constraintTop_toBottomOf="@id/thumbnailImageView" >
+
+                <ToggleButton
+                    android:id="@+id/followingToggleButton"
+                    style="@style/Widget.Button.Toggle"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:checked="@{game.following}"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn=""
+                    tools:ignore="TouchTargetSizeCheck" />
+                <!-- TouchTargetSize Ignored because touch is handled by surrounging layout -->
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/gameName"
@@ -55,7 +64,7 @@
                 android:text="@{game.name}"
                 android:textAppearance="@style/Header"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/followingToggleButton"
+                app:layout_constraintEnd_toStartOf="@id/toggleLayout"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/thumbnailImageView"
@@ -65,7 +74,7 @@
                 android:id="@+id/releaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/followingToggleButton"
+                app:layout_constraintEnd_toStartOf="@id/toggleLayout"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gameName"

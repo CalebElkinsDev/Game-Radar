@@ -14,7 +14,8 @@ import com.elkins.gamesradar.databinding.GameListItemBinding
 /**
  * [RecyclerView.Adapter] that displays [DatabaseGame] objects.
  */
-class GamesListRecyclerViewAdapter(private val detailsListener: ClickListener):
+class GamesListRecyclerViewAdapter(private val detailsListener: ClickListener,
+                                   private val followingListener: FollowingListener):
     ListAdapter<DatabaseGame, GamesListRecyclerViewAdapter.GameViewHolder>(GameDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : GameViewHolder {
@@ -23,7 +24,7 @@ class GamesListRecyclerViewAdapter(private val detailsListener: ClickListener):
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, followingListener)
 
         // Bind callback for navigating to game details
         holder.itemView.setOnClickListener {
@@ -35,8 +36,18 @@ class GamesListRecyclerViewAdapter(private val detailsListener: ClickListener):
     class GameViewHolder(private val binding: GameListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DatabaseGame) {
+        fun bind(item: DatabaseGame, followingListener: FollowingListener) {
             binding.game = item
+
+            // Handle on click of toggle group for following status
+            binding.toggleLayout.setOnClickListener {
+                // Toggle the toggle button when the surrounding layout is clicked
+                val newStatus = !binding.followingToggleButton.isChecked
+                binding.followingToggleButton.isChecked = newStatus
+
+                // Pass along the new status to the GamesListFragment
+                followingListener.onClick(newStatus)
+            }
 
             /* Add a custom text view to the platforms group for each platform of the game*/
             binding.platformsGroup.removeAllViews() // Clear previous platforms
@@ -79,4 +90,9 @@ class GamesListRecyclerViewAdapter(private val detailsListener: ClickListener):
 /** Simple callback class used for handling clicks on items in the list. */
 class ClickListener(val clickListener: (game: DatabaseGame) -> Unit) {
     fun onClick(game: DatabaseGame) = clickListener(game)
+}
+
+/** Callback for returning a boolean. Used to change "following" status of game. */
+class FollowingListener(val followingListener: (following: Boolean) -> Unit) {
+    fun onClick(following: Boolean) = followingListener(following)
 }

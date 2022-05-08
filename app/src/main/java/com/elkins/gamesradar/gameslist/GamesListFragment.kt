@@ -126,6 +126,8 @@ class GamesListFragment : Fragment() {
     private fun initializeRecyclerView() {
         adapter = GamesListRecyclerViewAdapter(ClickListener {
             viewModel.startNavigateToDetailsPage(it.guid)
+        }, FollowingListener {
+            Log.d("Following", "New status = $it")
         })
         binding.list.adapter = adapter
         binding.list.layoutManager = GridLayoutManager(context, columnCount)
