@@ -19,5 +19,8 @@
         <item name="bodyTextColor">@color/bodyTextColorDay</item>
         <item name="activity_bg_color">@color/activity_bg_color_day</item>
         <item name="android:textAppearanceSmall">@style/BodyText</item>
+
+        <item name="cardBackgroundColor">@color/navy_med</item>
     </style>
+
 </resources>

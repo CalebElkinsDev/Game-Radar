@@ -36,9 +36,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         // Handle changing the application's theme
         val themePref = findPreference<ListPreference>(PREF_THEME)
-        themePref?.setOnPreferenceChangeListener { preference, newValue ->
-            Log.d("Theme", "Changing to ${newValue}")
-
+        themePref?.setOnPreferenceChangeListener { _, newValue ->
             // Get the AppCompateDelegate Int corresponding to the new value
             val mode = when(newValue) {
                 "MODE_NIGHT_NO" -> AppCompatDelegate.MODE_NIGHT_NO
@@ -53,7 +51,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         // Setup a onPreferenceChangeListener for the "Release Window" preference
         val releasesPref = findPreference<ListPreference>(PREF_RELEASE_WINDOW)
-        releasesPref?.setOnPreferenceChangeListener { preference, newValue ->
+        releasesPref?.setOnPreferenceChangeListener { _, newValue ->
             val newReleaseWindow = GamesRepository.ReleaseWindow.valueOf(newValue.toString().uppercase())
 
             // Notify the view model of a filter change
@@ -64,7 +62,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         // Setup a onPreferenceChangeListener for the "Platforms" preference
         val platformsPref = findPreference<MultiSelectListPreference>(PREF_PLATFORMS)
-        platformsPref?.setOnPreferenceChangeListener { preference, newValue ->
+        platformsPref?.setOnPreferenceChangeListener { _, newValue ->
             // Convert the preferences HashSet to an Array
             val newList = mutableListOf<String>()
             for(item in (newValue as HashSet<String>)) {
@@ -87,7 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPlatformsSummary()
 
         val sortOrderPref = findPreference<SwitchPreferenceCompat>(PREF_SORT_ORDER)
-        sortOrderPref?.setOnPreferenceChangeListener { preference, newValue ->
+        sortOrderPref?.setOnPreferenceChangeListener { _, newValue ->
             viewModel.updateFilterSortOrder(newValue as Boolean)
             true
         }
@@ -95,7 +93,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val clearCachePref = findPreference<SwitchPreferenceCompat>(PREF_CLEAR_CACHE)
         clearCachePref?.let {
             setCacheSummaryOff(it)
-            it.setOnPreferenceChangeListener { preference, newValue ->
+            it.setOnPreferenceChangeListener { _, _ ->
                 requireActivity().cacheDir.deleteRecursively()
                 Toast.makeText(requireActivity(), R.string.settings_cache_cleared_toast, Toast.LENGTH_LONG).show()
                 resetToggle(clearCachePref)
