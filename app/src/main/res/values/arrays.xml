@@ -40,4 +40,17 @@
         <item>ARC</item>,
         <item>BROW</item>
     </string-array>
+
+    <!-- Theme array-->
+    <string-array name="list_themes_entires">
+        <item>Automatic</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="list_themes_values">
+        <item>MODE_NIGHT_FOLLOW_SYSTEM</item>
+        <item>MODE_NIGHT_NO</item>
+        <item>MODE_NIGHT_YES</item>
+    </string-array>
 </resources>

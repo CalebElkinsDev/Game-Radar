@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
@@ -21,6 +22,7 @@ import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_CLEAR_CA
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_PLATFORMS
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_RELEASE_WINDOW
 import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_SORT_ORDER
+import com.elkins.gamesradar.utility.PreferenceConstants.Companion.PREF_THEME
 import com.elkins.gamesradar.utility.getAppCacheSize
 import com.elkins.gamesradar.utility.setSupportBarTitle
 
@@ -31,6 +33,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+        // Handle changing the application's theme
+        val themePref = findPreference<ListPreference>(PREF_THEME)
+        themePref?.setOnPreferenceChangeListener { preference, newValue ->
+            Log.d("Theme", "Changing to ${newValue}")
+
+            // Get the AppCompateDelegate Int corresponding to the new value
+            val mode = when(newValue) {
+                "MODE_NIGHT_NO" -> AppCompatDelegate.MODE_NIGHT_NO
+                "MODE_NIGHT_YES" -> AppCompatDelegate.MODE_NIGHT_YES
+                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+
+            // Change the app's current theme to the new mode
+            AppCompatDelegate.setDefaultNightMode(mode)
+            true
+        }
 
         // Setup a onPreferenceChangeListener for the "Release Window" preference
         val releasesPref = findPreference<ListPreference>(PREF_RELEASE_WINDOW)

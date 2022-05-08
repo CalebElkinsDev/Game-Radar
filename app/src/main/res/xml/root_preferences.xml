@@ -1,4 +1,16 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Style">
+
+        <ListPreference
+            android:defaultValue="MODE_NIGHT_FOLLOW_SYSTEM"
+            android:entries="@array/list_themes_entires"
+            android:entryValues="@array/list_themes_values"
+            android:key="theme"
+            android:title="Theme"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/settings_section_games_list">
         <ListPreference
