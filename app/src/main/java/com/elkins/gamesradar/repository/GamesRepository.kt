@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.elkins.gamesradar.BuildConfig
 import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.database.GamesDatabase
 import com.elkins.gamesradar.database.getDatabase
@@ -31,7 +32,7 @@ class GamesRepository(private val application: Application) {
     }
 
     private val database: GamesDatabase = getDatabase(application)
-    private val apikey = "66e90279e18122006ea7d509821c519bb14bfe1d" // TODO REMOVE
+    private val apikey = BuildConfig.API_KEY
 
     /** The LiveData that is observed for getting filtered results from the database*/
     var databaseFilter: MutableLiveData<DatabaseFilter> = initializeDatabaseFilterFromPrefs()
