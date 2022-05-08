@@ -3,11 +3,14 @@ package com.elkins.gamesradar.gameslist
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.elkins.gamesradar.database.DatabaseGame
 import com.elkins.gamesradar.repository.GamesRepository
 import com.elkins.gamesradar.repository.getDatabaseFilterEndDate
 import com.elkins.gamesradar.repository.getDatabaseFilterStartDate
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 
@@ -35,7 +38,7 @@ class GamesListViewModel(application: Application) : ViewModel() {
             //gamesRepository.clearDatabase()
             val databaseSize = gamesRepository.getDatabaseSize()
 //            if(databaseSize <= 0) {
-            if(true) {
+            if(false) {
                 try {
                     gamesRepository.getGamesFromNetwork()
                 } catch (networkError: IOException) {
@@ -81,6 +84,13 @@ class GamesListViewModel(application: Application) : ViewModel() {
         val orderString = if(newOrder) "asc" else "desc"
         gamesRepository.databaseFilter.value = gamesRepository.databaseFilter.value.also {
             it?.sortOrder = orderString
+        }
+    }
+
+    /** Call the repository's method for updating a game's "following" status */
+    suspend fun updateFollowing(game: DatabaseGame) {
+        withContext(Dispatchers.IO) {
+            gamesRepository.updateFollowing(game)
         }
     }
 

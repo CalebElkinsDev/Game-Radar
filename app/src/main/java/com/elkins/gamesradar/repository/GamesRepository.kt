@@ -128,6 +128,11 @@ class GamesRepository(private val application: Application) {
         return database.gamesDao.getGames(query)
     }
 
+    /** Update the "following" status of the supplied game. */
+    suspend fun updateFollowing(game: DatabaseGame) {
+        database.gamesDao.updateGame(game)
+    }
+
     /**
      * Create a [DatabaseFilter] from the default shared preferences and return it wrapped as
      * MutableLiveData.

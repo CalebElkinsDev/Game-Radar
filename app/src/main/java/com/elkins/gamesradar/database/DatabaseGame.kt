@@ -25,5 +25,5 @@ data class DatabaseGame (
     val expectedReleaseMonth: Int,
     val expectedReleaseDay: Int,
     val releaseDateInMillis: Long,
-    val following: Boolean = false
+    var following: Boolean = false
 )

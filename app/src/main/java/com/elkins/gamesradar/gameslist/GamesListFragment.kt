@@ -17,6 +17,10 @@ import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
 import com.elkins.gamesradar.utility.hideKeyboard
 import com.elkins.gamesradar.utility.setSupportBarTitle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 
@@ -124,10 +128,14 @@ class GamesListFragment : Fragment() {
 
     /** Helper function for setting up the recycler view that holds game items */
     private fun initializeRecyclerView() {
-        adapter = GamesListRecyclerViewAdapter(ClickListener {
+        adapter = GamesListRecyclerViewAdapter(detailsListener = ClickListener {
+            Log.d("Testing", "Game: ${it.name}, Following: ${it.following}")
             viewModel.startNavigateToDetailsPage(it.guid)
-        }, FollowingListener {
-            Log.d("Following", "New status = $it")
+        }, followingListener = ClickListener {
+            Log.d("Following", "Game: ${it.name}, Following: ${it.following}")
+            GlobalScope.launch {
+                viewModel.updateFollowing(it)
+            }
         })
         binding.list.adapter = adapter
         binding.list.layoutManager = GridLayoutManager(context, columnCount)
