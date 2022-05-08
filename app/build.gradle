@@ -82,4 +82,7 @@ dependencies {
 
     // Flexbox
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:$work_version")
 }
