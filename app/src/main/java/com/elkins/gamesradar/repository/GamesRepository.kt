@@ -67,10 +67,14 @@ class GamesRepository(private val application: Application) {
                         totalGamesToAdd = response.body()!!.totalResults
                     }
 
-                    //Insert into database
-                    database.gamesDao.insertAll(response.body()!!.results.map {
+                    // Map the fetched NetworkGames to a list of DatabaseGames
+                    val fetchedGames = response.body()!!.results.map {
                         it.asDatabaseModel()
-                    })
+                    }
+                    // Attempt to insert or update each game
+                    for(game in fetchedGames) {
+                        database.gamesDao.insertOrUpdateGame(game)
+                    }
 
                     totalGamesAdded += response.body()!!.results.size
 

@@ -13,6 +13,12 @@ interface GamesDao {
     @RawQuery(observedEntities = [DatabaseGame::class])
     fun getGames(query: SupportSQLiteQuery): LiveData<List<DatabaseGame>>
 
+    @Query("SELECT * FROM databasegame WHERE id = :id")
+    fun getGame(id: Long): DatabaseGame
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertGame(game: DatabaseGame): Long
+
     /* Insert a list of games to the database that are not already present */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(games: List<DatabaseGame>)
@@ -25,6 +31,39 @@ interface GamesDao {
 
     @Update
     fun updateGame(game: DatabaseGame)
+
+    @Transaction
+    fun insertOrUpdateGame(game: DatabaseGame) {
+        val id = insertGame(game)
+        if(id == -1L) {
+            val existingGame = getGame(game.id)
+
+            val followingStatus = existingGame.following
+
+            /**
+             * Create a new DatabaseGame using the existing id and following status, but with
+             * updated fields from the recently fetched game in case of changes since insertion.
+            */
+            val updatedGame = DatabaseGame(
+                id = existingGame.id,
+                guid = game.guid,
+                name = game.name,
+                imageUrl = game.imageUrl,
+                platforms = game.platforms,
+                originalReleaseDate = game.originalReleaseDate,
+                expectedReleaseYear = game.expectedReleaseYear,
+                expectedReleaseQuarter = game.expectedReleaseQuarter,
+                expectedReleaseMonth = game.expectedReleaseMonth,
+                expectedReleaseDay = game.expectedReleaseDay,
+                releaseDateInMillis = game.releaseDateInMillis,
+                following = followingStatus
+            )
+
+            // Update the game with modified and merged fields
+            updateGame(updatedGame)
+        }
+    }
+
 
 //    @Query("UPDATE databasegame SET following = :following WHERE id = :id")
 //    fun updateFollowing(following: Boolean, id: Long)
