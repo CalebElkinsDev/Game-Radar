@@ -182,7 +182,7 @@ class GamesRepository(private val application: Application) {
             false -> "AND name LIKE '%${filter.name}%' "
         }
 
-        val queryOrder = "ORDER BY ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} ${filter.sortOrder}"
+        val queryOrder = "ORDER BY NOT following, ${DatabaseConstants.RELEASE_DATE_IN_MILLIS} ${filter.sortOrder}"
 
         return SimpleSQLiteQuery(querySelect + queryReleaseDates + queryPlatforms + queryTitle + queryOrder)
     }
