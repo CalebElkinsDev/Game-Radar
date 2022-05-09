@@ -1,27 +1,23 @@
 package com.elkins.gamesradar.gameslist
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.elkins.gamesradar.R
 import com.elkins.gamesradar.databinding.FragmentGamesListBinding
 import com.elkins.gamesradar.utility.hideKeyboard
 import com.elkins.gamesradar.utility.setSupportBarTitle
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.min
 
 
@@ -35,7 +31,8 @@ class GamesListFragment : Fragment() {
     private lateinit var adapter: GamesListRecyclerViewAdapter
     private lateinit var gameSearchView: SearchView
 
-    private val columnCount = 2
+    private val gridColumnsPortrait = 2
+    private val gridColumnsLandscape = 3
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,7 +132,16 @@ class GamesListFragment : Fragment() {
             }
         })
         binding.list.adapter = adapter
-        binding.list.layoutManager = GridLayoutManager(context, columnCount)
+
+        // Determine how many columns to create based on orientation
+        val columns = if(activity?.resources?.configuration?.orientation
+            == Configuration.ORIENTATION_PORTRAIT) {
+            gridColumnsPortrait
+        } else {
+            gridColumnsLandscape
+        }
+
+        binding.list.layoutManager = GridLayoutManager(context, columns)
     }
 
     /** Setup the functionality for the games search bar in the app bar. */
