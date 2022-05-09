@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 
 class GameDetailsViewModel: ViewModel() {
 
-    private val gamesRepository = GamesRadarApp.REPOSITORY
+    private val gamesRepository = GamesRadarApp.repository
 
     var gameDetails = MutableLiveData<GameDetails?>()
 

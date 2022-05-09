@@ -20,7 +20,7 @@ class GamesRadarApp : Application() {
 
     /** Initialize the [GamesRepository] instance and setup recurring work */
     private fun delayedInit() {
-        _REPOSITORY = GamesRepository(this)
+        _repository = GamesRepository(this)
 
         CoroutineScope(Dispatchers.Default).launch {
             setupWork()
@@ -53,8 +53,8 @@ class GamesRadarApp : Application() {
 
     companion object {
         // Singleton GamesRepostiory to be used through the application
-        private lateinit var _REPOSITORY: GamesRepository
-        val REPOSITORY: GamesRepository
-            get() = _REPOSITORY
+        private lateinit var _repository: GamesRepository
+        val repository: GamesRepository
+            get() = _repository
     }
 }

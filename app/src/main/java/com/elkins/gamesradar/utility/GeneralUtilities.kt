@@ -14,7 +14,7 @@ import kotlin.math.pow
 
 
 // Fragment extension for setting the title of the AppCompatActivity title bar
-fun Fragment.setSupportBarTitle(activity: Activity, title: String) {
+fun setSupportBarTitle(activity: Activity, title: String) {
     (activity as AppCompatActivity).supportActionBar?.title = title
 }
 
@@ -22,10 +22,6 @@ fun Fragment.setSupportBarTitle(activity: Activity, title: String) {
  *  https://dev.to/rohitjakhar/hide-keyboard-in-android-using-kotlin-in-20-second-18gp */
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
-}
-
-fun Activity.hideKeyboard() {
-    hideKeyboard(currentFocus ?: View(this))
 }
 
 fun Context.hideKeyboard(view: View) {

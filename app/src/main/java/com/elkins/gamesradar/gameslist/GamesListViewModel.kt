@@ -16,7 +16,7 @@ import java.io.IOException
 
 class GamesListViewModel : ViewModel() {
 
-    private val gamesRepository = GamesRadarApp.REPOSITORY
+    private val gamesRepository = GamesRadarApp.repository
 
     val games = Transformations.switchMap(gamesRepository.databaseFilter) {
         gamesRepository.getGames(it)

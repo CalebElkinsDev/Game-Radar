@@ -37,10 +37,6 @@ class GamesRepository(private val application: Application) {
     /** The LiveData that is observed for getting filtered results from the database*/
     var databaseFilter: MutableLiveData<DatabaseFilter> = initializeDatabaseFilterFromPrefs()
 
-    fun clearDatabase() {
-        database.gamesDao.clearDatabase()
-    }
-
     private var _databaseProgress = MutableLiveData(-1)
     val databaseProgress: LiveData<Int>
         get() = _databaseProgress
@@ -134,7 +130,7 @@ class GamesRepository(private val application: Application) {
     }
 
     /** Update the "following" status of the supplied game. */
-    suspend fun updateFollowing(game: DatabaseGame) {
+    fun updateFollowing(game: DatabaseGame) {
         database.gamesDao.updateGame(game)
     }
 

@@ -15,7 +15,7 @@ class NetworkWorker(context: Context, params: WorkerParameters) : CoroutineWorke
         Log.d("Work", "Starting work")
 
         return try {
-            GamesRadarApp.REPOSITORY.getGamesFromNetwork()
+            GamesRadarApp.repository.getGamesFromNetwork()
             Result.success()
 
         } catch (e: Exception) {
