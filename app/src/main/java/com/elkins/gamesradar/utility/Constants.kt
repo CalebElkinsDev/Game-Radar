@@ -30,7 +30,11 @@ class PreferenceConstants {
 /** Data class for getting relevant platforms and their preferred order */
 data class Platform(val name: String, val abbreviation: String, val id: Int)
 
-/** A List containing all applicable platforms. Entries in order they should appear in lists */
+/**
+ * A List containing all applicable platforms. Entries in order they should appear in lists
+ *
+ * Original implemtation changed, but kept for reference and API consistency.
+ */
 val ALL_PLATFORMS = listOf(
     Platform("PS4", "PlayStation 4", 146),
     Platform("PS5", "PlayStation 5", 176),

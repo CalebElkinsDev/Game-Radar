@@ -16,6 +16,10 @@ import com.elkins.gamesradar.databinding.FragmentGameDetailsBinding
 import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
+/**
+ * Fragment class that displays the detailed version of a [com.elkins.gamesradar.gameslist.GamesListFragment]
+ * game item. Further details are retireved from another API call, using the game's GUID field.
+ */
 class GameDetailsFragment : Fragment() {
 
     private val galleryColumns = 3

@@ -7,6 +7,11 @@ import com.elkins.gamesradar.databinding.GalleryFullscreenItemBinding
 import com.elkins.gamesradar.gallery.GalleryFullscreenAdapter.GalleryFullscreenViewHolder
 import com.elkins.gamesradar.gamedetails.GalleryItem
 
+
+/**
+ * Simple RecyclerView.Adapter implementation that uses databinding to assign [GalleryItem] to
+ * the view holders.
+ */
 class GalleryFullscreenAdapter(private val items: List<GalleryItem>)
     : RecyclerView.Adapter<GalleryFullscreenViewHolder>() {
 

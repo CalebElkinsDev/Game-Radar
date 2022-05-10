@@ -14,6 +14,10 @@ import com.elkins.gamesradar.gamedetails.GalleryItem
 import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
+/**
+ * Fragment for displaying fullscreen versions of images from a
+ * [com.elkins.gamesradar.gamedetails.GameDetails] object
+ */
 class GalleryFragment : Fragment() {
 
     private lateinit var binding: FragmentGalleryBinding

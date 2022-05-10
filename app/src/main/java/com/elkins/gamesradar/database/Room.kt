@@ -63,10 +63,6 @@ interface GamesDao {
             updateGame(updatedGame)
         }
     }
-
-
-//    @Query("UPDATE databasegame SET following = :following WHERE id = :id")
-//    fun updateFollowing(following: Boolean, id: Long)
 }
 
 @TypeConverters(TypeConvertors::class)

@@ -43,7 +43,7 @@
 
     <!-- Theme array-->
     <string-array name="list_themes_entires">
-        <item>Automatic</item>
+        <item>System Default</item>
         <item>Light</item>
         <item>Dark</item>
     </string-array>

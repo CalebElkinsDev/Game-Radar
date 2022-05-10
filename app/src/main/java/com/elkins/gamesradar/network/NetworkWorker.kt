@@ -8,11 +8,10 @@ import com.elkins.gamesradar.GamesRadarApp
 import java.lang.Exception
 
 
+/** CourotineWorker implementation for fetching and updating the database contents periodically. */
 class NetworkWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-
-        Log.d("Work", "Starting work")
 
         return try {
             GamesRadarApp.repository.getGamesFromNetwork()

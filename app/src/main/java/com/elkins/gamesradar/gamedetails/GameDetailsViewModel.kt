@@ -5,6 +5,7 @@ import com.elkins.gamesradar.GamesRadarApp
 import kotlinx.coroutines.launch
 
 
+/** ViewModel used to persist the details of a game through lifecycle events. */
 class GameDetailsViewModel: ViewModel() {
 
     private val gamesRepository = GamesRadarApp.repository

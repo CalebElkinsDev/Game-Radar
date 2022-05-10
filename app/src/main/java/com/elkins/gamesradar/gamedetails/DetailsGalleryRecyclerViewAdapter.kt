@@ -8,6 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elkins.gamesradar.databinding.GalleryItemBinding
 
 
+/**
+ * ListAdapter implementation for displaying [GalleryItem] image thumbnails. Differs from
+ * [com.elkins.gamesradar.gallery.GalleryFullscreenAdapter] in that the ViewHolders are given
+ * an onClick listener used to navigate to the [com.elkins.gamesradar.gallery.GalleryFragment]
+ */
 class DetailsGalleryRecyclerViewAdapter(private val detailsListener: ClickListener):
     ListAdapter<GalleryItem, DetailsGalleryRecyclerViewAdapter.GalleryViewHolder>(GalleryDiffCallback()) {
 

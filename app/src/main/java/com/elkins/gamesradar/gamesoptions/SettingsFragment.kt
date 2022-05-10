@@ -27,6 +27,7 @@ import com.elkins.gamesradar.utility.getAppCacheSize
 import com.elkins.gamesradar.utility.setSupportBarTitle
 
 
+/** PreferenceFragmentComptat implementation for modifying user preferences. */
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private val viewModel by viewModels<GamesListViewModel>()
